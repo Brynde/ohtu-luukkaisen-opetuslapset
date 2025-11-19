@@ -27,7 +27,7 @@ def new_source():
         year = request.form.get("year")
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
-        create_book(author, title, year)
+        create_book(key, ref_type, author, title, year, journal, publisher)
         return redirect("/sources")
 
     return render_template("new_reference.html")
@@ -47,9 +47,7 @@ def update_source():
     year = request.form("year")
     journal = request.form("journal")
     publisher = request.form("publisher")
-
     sources.update_source(source_key, ref_type, author, title, year, journal, publisher)
-
     return redirect("source/" + str(source_key))
 
 
