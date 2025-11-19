@@ -2,9 +2,10 @@ from config import app, db
 import os
 
 def reset_db():
-    schema_path = os.path.join(os.path.dirname(__file__), "schema.sql")
-    with open(schema_path, "r") as f:
-        schema_sql = f.read()
+  print(f"Clearing contents from table books")
+  sql = text(f"DELETE FROM books")
+  db.session.execute(sql)
+  db.session.commit()
 
     conn = db.engine.raw_connection()
     try:
