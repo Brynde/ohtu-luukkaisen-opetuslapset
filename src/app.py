@@ -1,14 +1,13 @@
 from flask import redirect, render_template, request, jsonify, flash
 from db_helper import reset_db
-from repositories.todo_repository import get_todos, create_todo, set_done
+from repositories.book_repository import get_books, create_book
 from config import app, test_env
-from util import validate_todo
+from util import validate_book
 
 @app.route("/")
 def index():
-    todos = get_todos()
-    unfinished = len([todo for todo in todos if not todo.done])
-    return render_template("index.html", todos=todos, unfinished=unfinished) 
+    books = get_books()
+    return render_template("index.html", books=books) 
 
 @app.route("/sources")
 def sources():
@@ -21,10 +20,9 @@ def new():
 @app.route("/create_todo", methods=["POST"])
 def todo_creation():
     content = request.form.get("content")
-
     try:
-        validate_todo(content)
-        create_todo(content)
+        validate_book(content)
+        create_book(content)
         return redirect("/")
     except Exception as error:
         flash(str(error))
@@ -32,7 +30,6 @@ def todo_creation():
 
 @app.route("/toggle_todo/<todo_id>", methods=["POST"])
 def toggle_todo(todo_id):
-    set_done(todo_id)
     return redirect("/")
 
 # testausta varten oleva reitti
