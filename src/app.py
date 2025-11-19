@@ -3,6 +3,7 @@ from db_helper import reset_db
 from repositories.book_repository import get_books, create_book
 from config import app, test_env
 from util import validate_book
+from source_service import add_source, get_sources
 
 
 @app.route("/")
@@ -12,7 +13,8 @@ def index():
 
 @app.route("/sources")
 def sources():
-    return render_template("sources.html")
+    all_sources = get_sources()  # fetch all sources from the DB
+    return render_template("sources.html", sources=all_sources)
 
 
 @app.route("/sources/new", methods=["GET", "POST"])
@@ -25,10 +27,40 @@ def new_source():
         year = request.form.get("year")
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
+<<<<<<< HEAD
         create_book(author, title, year)
+=======
+        print("here is the key ", key)
+        try:
+            add_source(key, ref_type, author, title, year, journal, publisher)
+            print("New source added successfully!", "success")
+        except Exception as e:
+            print(f"Error adding source: {str(e)}", "error")
+
+>>>>>>> c7bb074efe35b7a49d726a9a57e38a9629fe12a5
         return redirect("/sources")
 
     return render_template("new_reference.html")
+
+@app.route("/sources/edit/<str:source_key")
+def edit_source(source_key):
+    key = sources.get_key(source_key)
+
+    return render_template("edit_source.html", key=key)
+
+@app.route("/sources/update", methods=["POST"])
+def update_source():
+    source_key = request.form["source_key"]
+    ref_type = request.form("ref_type")
+    author = request.form("author")
+    title = request.form("title")
+    year = request.form("year")
+    journal = request.form("journal")
+    publisher = request.form("publisher")
+
+    sources.update_source(source_key, ref_type, author, title, year, journal, publisher)
+
+    return redirect("source/" + str(source_key))
 
 
 @app.route("/new_todo")
