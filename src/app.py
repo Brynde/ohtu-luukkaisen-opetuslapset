@@ -10,6 +10,10 @@ def index():
     unfinished = len([todo for todo in todos if not todo.done])
     return render_template("index.html", todos=todos, unfinished=unfinished) 
 
+@app.route("/sources")
+def sources():
+    return render_template("sources.html")
+
 @app.route("/new_todo")
 def new():
     return render_template("new_todo.html")
