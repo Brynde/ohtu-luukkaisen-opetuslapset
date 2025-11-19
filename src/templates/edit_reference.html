@@ -7,7 +7,7 @@
 <body>
     <h1>Muokkaa viitettä {{ source.key }}</h1>
 
-    <form action="/source/update_item" method="POST">
+    <form action="/sources/update_item" method="POST">
         <label for="key">Viiteavain (key):</label><br>
         <input type="text" id="key" name="key" value="{{ source.key }}" required><br><br>
 

@@ -1,6 +1,6 @@
 from flask import redirect, render_template, request, jsonify, flash
 from db_helper import reset_db
-from repositories.book_repository import get_books, create_book, get_info
+from repositories.book_repository import get_books, create_book, get_info, edit_book
 from config import app, test_env
 from util import validate_book
 from source_service import add_source, get_sources
@@ -37,17 +37,17 @@ def edit_source(source_key):
     source = get_info(source_key)
     return render_template("edit_reference.html", key=source_key, source=source)
 
-@app.route("/sources/update", methods=["POST"])
+@app.route("/sources/update_item", methods=["POST"])
 def update_source():
-    source_key = request.form["source_key"]
-    ref_type = request.form("ref_type")
-    author = request.form("author")
-    title = request.form("title")
-    year = request.form("year")
-    journal = request.form("journal")
-    publisher = request.form("publisher")
-    sources.update_source(source_key, ref_type, author, title, year, journal, publisher)
-    return redirect("source/" + str(source_key))
+    source_key = request.form.get("key")
+    ref_type = request.form.get("ref_type")
+    author = request.form.get("author")
+    title = request.form.get("title")
+    year = request.form.get("year")
+    journal = request.form.get("journal")
+    publisher = request.form.get("publisher")
+    edit_book(source_key, [source_key, ref_type, author, title, year, journal, publisher])
+    return redirect("/")
 
 @app.route("/")
 def delete_source():

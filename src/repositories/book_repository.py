@@ -9,29 +9,54 @@ def get_books():
     books = result.fetchall()
     return [Book(book[0], book[1], book[2]) for book in books] 
 
-def get_info(book_id):
-    sql = text("SELECT key, ref_type, author, title, year, journal, publisher FROM books WHERE id = :id")
-    result = db.session.execute(sql, {"id": book_id})
+def get_info(source_key):
+    sql = text("SELECT key, ref_type, author, title, year, journal, publisher FROM books WHERE key = :key")
+    result = db.session.execute(sql, {"key": source_key})
     book_info = result.fetchone()
     if book_info is None:
         return None
-    return book_info
+    return {
+        "key": book_info[0],
+        "ref_type": book_info[1],
+        "author": book_info[2],
+        "title": book_info[3],
+        "year": book_info[4],
+        "journal": book_info[5],
+        "publisher": book_info[6],
+    }
 
 def create_book(key, ref_type, author, title, year, journal, publisher):
     sql = text("INSERT INTO books (key, ref_type, author, title, year, journal, publisher) VALUES (:key, :ref_type, :author, :title, :year, :journal, :publisher)")
     db.session.execute(sql, {"key": key, "ref_type": ref_type, "author": author, "title": title, "year": year, "journal": journal, "publisher": publisher})
     db.session.commit()
 
-def edit_book(book_id, content):
-    current_info = get_info(book_id)
-    i=0
-    new_info = False
-    for info in content:
-        if info != current_info[i]:
-            new_info = True
-            current_info[i] = info
-        i+=1
-    if new_info:
-        sql = text(f"UPDATE books SET key = :key, ref_type = :ref_type, author = :author, title = :title, year = :year, journal = :journal, publisher = :publisher WHERE id = :id")
-        db.session.execute(sql, {"key": current_info[0], "ref_type": current_info[1], "author": current_info[2], "title": current_info[3], "year": current_info[4], "journal": current_info[5], "publisher": current_info[6],"id": book_id})
-        db.session.commit()
+def edit_book(source_key, content):
+    current = get_info(source_key)
+    if current is None:
+        return False
+
+    fields = ["key", "ref_type", "author", "title", "year", "journal", "publisher"]
+    if isinstance(content, (list, tuple)):
+        if len(content) != len(fields):
+            raise ValueError("content list must have 7 elements")
+        new = dict(zip(fields, content))
+    elif isinstance(content, dict):
+        new = content.copy()
+    else:
+        raise TypeError("content must be dict or list/tuple")
+    set_clauses = []
+    params = {}
+    for f in fields:
+        if f in new:
+            if new[f] != current.get(f):
+                set_clauses.append(f + " = :" + f)
+                params[f] = new[f]
+
+    if not set_clauses:
+        return False
+
+    params["source_key"] = source_key
+    sql = text(f"UPDATE books SET {', '.join(set_clauses)} WHERE key = :source_key")
+    db.session.execute(sql, params)
+    db.session.commit()
+    return True
