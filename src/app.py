@@ -3,6 +3,7 @@ from db_helper import reset_db
 from repositories.book_repository import get_books, create_book
 from config import app, test_env
 from util import validate_book
+from source_service import add_source, get_sources
 
 
 @app.route("/")
@@ -12,7 +13,8 @@ def index():
 
 @app.route("/sources")
 def sources():
-    return render_template("sources.html")
+    all_sources = get_sources()  # fetch all sources from the DB
+    return render_template("sources.html", sources=all_sources)
 
 
 @app.route("/sources/new", methods=["GET", "POST"])
@@ -25,6 +27,13 @@ def new_source():
         year = request.form.get("year")
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
+        print("here is the key ", key)
+        try:
+            add_source(key, ref_type, author, title, year, journal, publisher)
+            print("New source added successfully!", "success")
+        except Exception as e:
+            print(f"Error adding source: {str(e)}", "error")
+
         return redirect("/sources")
 
     return render_template("new_reference.html")

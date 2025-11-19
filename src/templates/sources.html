@@ -67,28 +67,25 @@
 
 <a href="/sources/new" class="add-button">+ Add New Source</a>
 
-    <!-- Placeholder sample items -->
-    <div class="source-card">
-        <h3>Example Book Title</h3>
-        <p><strong>Author:</strong> John Doe</p>
-        <p><strong>Year:</strong> 2020</p>
+    {% if sources %}
+        {% for source in sources %}
+            <div class="source-card">
+                <h3>{{ source.title }}</h3>
+                <p><strong>Author:</strong> {{ source.author }}</p>
+                <p><strong>Type:</strong> {{ source.ref_type }}</p>
+                <p><strong>Year:</strong> {{ source.year }}</p>
+                <p><strong>Journal / Publisher:</strong> 
+                   {{ source.journal if source.journal else source.publisher }}</p>
 
-        <div class="buttons">
-            <button class="edit-btn">Edit</button>
-            <button class="delete-btn">Delete</button>
-        </div>
-    </div>
-
-    <div class="source-card">
-        <h3>Another Source Example</h3>
-        <p><strong>Author:</strong> Unknown</p>
-        <p><strong>Year:</strong> 2022</p>
-
-        <div class="buttons">
-            <button class="edit-btn">Edit</button>
-            <button class="delete-btn">Delete</button>
-        </div>
-    </div>
+                <div class="buttons">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No sources found. Add a new source above!</p>
+    {% endif %}
 
 </body>
 </html>
