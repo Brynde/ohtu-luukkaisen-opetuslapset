@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lisää uusi viite</title>
+</head>
+<body>
+    <h1>Lisää uusi viite</h1>
+
+    <form method="POST">
+        <label for="key">Viiteavain (key):</label><br>
+        <input type="text" id="key" name="key" required><br><br>
+
+        <label for="ref_type">Tyyppi:</label><br>
+        <select id="ref_type" name="ref_type">
+            <option value="article">article</option>
+            <option value="book">book</option>
+            <option value="inproceedings">inproceedings</option>
+        </select><br><br>
+
+        <label for="author">Tekijä(t):</label><br>
+        <input type="text" id="author" name="author" required><br><br>
+
+        <label for="title">Otsikko (title):</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="year">Vuosi (year):</label><br>
+        <input type="number" id="year" name="year" required><br><br>
+
+        <label for="journal">Lehti / Konferenssi (journal/booktitle):</label><br>
+        <input type="text" id="journal" name="journal"><br><br>
+
+        <label for="publisher">Kustantaja (publisher):</label><br>
+        <input type="text" id="publisher" name="publisher"><br><br>
+
+        <button type="submit">Tallenna viite</button>
+    </form>
+
+    <p>
+        <a href="/sources">Takaisin viitelistaan</a>
+    </p>
+</body>
+</html>
