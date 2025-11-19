@@ -7,14 +7,13 @@ from util import validate_todo
 
 @app.route("/")
 def index():
-    todos = get_todos()
-    unfinished = len([todo for todo in todos if not todo.done])
-    return render_template("index.html", todos=todos, unfinished=unfinished)
+    return redirect("/sources")
 
 
 @app.route("/sources")
 def sources():
     return render_template("sources.html")
+
 
 @app.route("/sources/new", methods=["GET", "POST"])
 def new_source():
@@ -26,7 +25,6 @@ def new_source():
         year = request.form.get("year")
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
-
         return redirect("/sources")
 
     return render_template("new_reference.html")
@@ -40,7 +38,6 @@ def new():
 @app.route("/create_todo", methods=["POST"])
 def todo_creation():
     content = request.form.get("content")
-
     try:
         validate_todo(content)
         create_todo(content)
