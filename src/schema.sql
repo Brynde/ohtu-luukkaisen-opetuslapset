@@ -1,6 +1,10 @@
 CREATE TABLE books (
-  id SERIAL PRIMARY KEY,
-  author TEXT NOT NULL,
-  title TEXT NOT NULL, 
-  year INT
-)
+    id INTEGER PRIMARY KEY,
+    key TEXT UNIQUE NOT NULL,
+    ref_type TEXT,
+    author TEXT,
+    title TEXT,
+    year INTEGER,
+    journal TEXT,
+    publisher TEXT
+);
