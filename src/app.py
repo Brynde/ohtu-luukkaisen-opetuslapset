@@ -1,6 +1,6 @@
 from flask import redirect, render_template, request, jsonify, flash
 from db_helper import reset_db
-from repositories.book_repository import get_books, create_book
+from repositories.book_repository import get_books, create_book, get_info
 from config import app, test_env
 from util import validate_book
 from source_service import add_source, get_sources
@@ -34,9 +34,8 @@ def new_source():
 
 @app.route("/sources/edit/<string:source_key>")
 def edit_source(source_key):
-    key = sources.get_key(source_key)
-
-    return render_template("edit_source.html", key=key)
+    source = get_info(source_key)
+    return render_template("edit_reference.html", key=source_key, source=source)
 
 @app.route("/sources/update", methods=["POST"])
 def update_source():
@@ -50,6 +49,9 @@ def update_source():
     sources.update_source(source_key, ref_type, author, title, year, journal, publisher)
     return redirect("source/" + str(source_key))
 
+@app.route("/")
+def delete_source():
+    return redirect("/sources")
 
 @app.route("/new_todo")
 def new():
