@@ -29,6 +29,26 @@ def new_source():
 
     return render_template("new_reference.html")
 
+@app.route("/sources/edit/<str:source_key")
+def edit_source(source_key):
+    key = sources.get_key(source_key)
+
+    return render_template("edit_source.html", key=key)
+
+@app.route("/sources/update", methods=["POST"])
+def update_source():
+    source_key = request.form["source_key"]
+    ref_type = request.form("ref_type")
+    author = request.form("author")
+    title = request.form("title")
+    year = request.form("year")
+    journal = request.form("journal")
+    publisher = request.form("publisher")
+
+    sources.update_source(source_key, ref_type, author, title, year, journal, publisher)
+
+    return redirect("source/" + str(source_key))
+
 
 @app.route("/new_todo")
 def new():
