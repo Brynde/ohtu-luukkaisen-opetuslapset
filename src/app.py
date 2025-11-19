@@ -27,22 +27,12 @@ def new_source():
         year = request.form.get("year")
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
-<<<<<<< HEAD
         create_book(author, title, year)
-=======
-        print("here is the key ", key)
-        try:
-            add_source(key, ref_type, author, title, year, journal, publisher)
-            print("New source added successfully!", "success")
-        except Exception as e:
-            print(f"Error adding source: {str(e)}", "error")
-
->>>>>>> c7bb074efe35b7a49d726a9a57e38a9629fe12a5
         return redirect("/sources")
 
     return render_template("new_reference.html")
 
-@app.route("/sources/edit/<str:source_key")
+@app.route("/sources/edit/<string:source_key>")
 def edit_source(source_key):
     key = sources.get_key(source_key)
 
