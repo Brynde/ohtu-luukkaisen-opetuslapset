@@ -13,7 +13,7 @@ def index():
 
 @app.route("/sources")
 def sources():
-    all_sources = get_sources()  # fetch all sources from the DB
+    all_sources = get_books()  # fetch all sources from the DB
     return render_template("sources.html", sources=all_sources)
 
 

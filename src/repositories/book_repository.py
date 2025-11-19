@@ -5,9 +5,9 @@ from entities.todo import Todo
 from entities.book import Book
 
 def get_books():
-    result = db.session.execute(text("SELECT author, title, year FROM books"))
+    result = db.session.execute(text("SELECT * FROM books"))
     books = result.fetchall()
-    return [Book(book[0], book[1], book[2]) for book in books] 
+    return books
 
 def get_info(source_key):
     sql = text("SELECT key, ref_type, author, title, year, journal, publisher FROM books WHERE key = :key")
