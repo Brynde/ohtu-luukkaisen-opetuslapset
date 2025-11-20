@@ -26,12 +26,13 @@ def validate_title(title):
 
 def validate_year(year):
     try:
-        year = str(year)
+        year = int(year)
+        if year < 0:
+            raise UserInputError("The year cannot be negative")
     except:
         raise UserInputError("The year must be a number")
     
-    if str(year) < 0:
-        raise UserInputError("The year cannot be negative")
+    
     
 def validate_journal(journal):
     if len(journal) < 5:

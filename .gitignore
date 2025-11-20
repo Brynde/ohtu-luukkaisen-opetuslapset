@@ -9,3 +9,4 @@ report.html
 *.png
 possu.sh
 src/instance/
+.coverage
