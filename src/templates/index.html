@@ -75,8 +75,10 @@ Sources
                 <p><strong>Author:</strong> {{ source.author }}</p>
                 <p><strong>Type:</strong> {{ source.ref_type }}</p>
                 <p><strong>Year:</strong> {{ source.year }}</p>
+                {% if source.journal or source.publisher %}
                 <p><strong>Journal / Publisher:</strong> 
                    {{ source.journal if source.journal else source.publisher }}</p>
+                {% endif %}
 
             <div class="buttons">
                 <a href="{{ url_for('edit_source', source_key=source.key) }}" class="edit-btn">Edit</a>
