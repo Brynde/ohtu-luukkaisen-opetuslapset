@@ -1,34 +1,96 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Todo app
+Sources
 {% endblock %}
 
 {% block body %}
 
-<h2>Todo app</h2>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
 
-<div>
-  things still unfinished: {{ unfinished }}
-</div>
+        h1 {
+            color: #333;
+        }
 
-<ul>
-  {% for todo in todos %}
-    <li style="display: flex">
-      <div>
-        {{ todo }} 
-      </div>
-      {% if not todo.done %}
-        <form action="/toggle_todo/{{ todo.id }}" method="post" style="margin-left: 10px;">
-          <button type="submit">mark as done</button>
-        </form>
-      {% endif %}
-    </li>
-  {% endfor %}
-</ul>
+        .add-button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
 
-<div>
-  <a href="/new_todo">Create new todo</a>
-</div>
+        .source-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .source-card h3 {
+            margin: 0 0 5px;
+        }
+
+        .buttons {
+            margin-top: 10px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Your Sources</h1>
+
+<a href="/sources/new" class="add-button">+ Add New Source</a>
+
+    {% if sources %}
+        {% for source in sources %}
+            <div class="source-card">
+                <h3>{{ source.title }}</h3>
+                <p><strong>Author:</strong> {{ source.author }}</p>
+                <p><strong>Type:</strong> {{ source.ref_type }}</p>
+                <p><strong>Year:</strong> {{ source.year }}</p>
+                <p><strong>Journal / Publisher:</strong> 
+                   {{ source.journal if source.journal else source.publisher }}</p>
+
+            <div class="buttons">
+                <a href="{{ url_for('edit_source', source_key=source.key) }}" class="edit-btn">Edit</a>
+                <form action="{{ url_for('delete_source', source_key=source.key) }}" method="post" style="display:inline">
+                    <button class="delete-btn" type="submit">Delete</button>
+                </form>
+            </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No sources found. Add a new source above!</p>
+    {% endif %}
+
+</body>
+</html>
 
 {% endblock %}

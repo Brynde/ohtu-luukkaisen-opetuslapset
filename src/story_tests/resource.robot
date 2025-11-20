@@ -4,7 +4,7 @@ Library  SeleniumLibrary
 *** Variables ***
 ${SERVER}     localhost:5001
 ${DELAY}      0.5 seconds
-${HOME_URL}   http://${SERVER}/sources
+${HOME_URL}   http://${SERVER}/
 ${NEW_URL}   http://${SERVER}/sources/new
 ${RESET_URL}  http://${SERVER}/reset_db
 ${BROWSER}    chrome
