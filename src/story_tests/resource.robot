@@ -4,7 +4,8 @@ Library  SeleniumLibrary
 *** Variables ***
 ${SERVER}     localhost:5001
 ${DELAY}      0.5 seconds
-${HOME_URL}   http://${SERVER}
+${HOME_URL}   http://${SERVER}/sources
+${NEW_URL}   http://${SERVER}/sources/new
 ${RESET_URL}  http://${SERVER}/reset_db
 ${BROWSER}    chrome
 ${HEADLESS}   false
@@ -26,6 +27,14 @@ Open And Configure Browser
     END
     Open Browser  browser=${BROWSER}  options=${options}
 
-Reset Todos
+Reset Sources
     Go To  ${RESET_URL}
 
+New Source Form Should Be Open
+    Title Should Be  Lisää uusi viite
+
+Go To Starting Page
+    Go To  ${HOME_URL}
+
+Go To New Source Page
+    Go To  ${NEW_URL}
