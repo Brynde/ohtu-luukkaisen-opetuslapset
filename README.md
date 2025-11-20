@@ -5,8 +5,10 @@ https://docs.google.com/spreadsheets/d/1-FlkctWyJTgW-eF1vH_Z0ssMxPyceTmeGw08CQMj
 ## Asennusohjeet:
 
 Vaatimukset:
--Python
--Poetry
+
+  - Python
+  
+  - Poetry
 
 Lataa ohjelma git clone komennolla
 
