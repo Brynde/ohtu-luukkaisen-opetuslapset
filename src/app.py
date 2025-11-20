@@ -3,7 +3,7 @@ from db_helper import reset_db
 from repositories.book_repository import get_books, create_book, get_info, edit_book
 from config import app, test_env
 from util import validate_book
-from source_service import add_source, get_sources
+
 
 
 @app.route("/")
@@ -27,9 +27,15 @@ def new_source():
         year = request.form.get("year")
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
-        create_book(key, ref_type, author, title, year, journal, publisher)
-        return redirect("/sources")
-
+        
+        try:
+            validate_book(key, ref_type, author, title, year, journal, publisher)
+            create_book(key, ref_type, author, title, year, journal, publisher)
+            return redirect("/sources")
+        except Exception as error:
+            flash(str(error))
+            return render_template("new_reference.html")
+        
     return render_template("new_reference.html")
 
 @app.route("/sources/edit/<string:source_key>")

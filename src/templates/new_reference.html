@@ -7,6 +7,14 @@
 <body>
     <h1>Lisää uusi viite</h1>
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <h3>{{ message }}</h3>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <form method="POST">
         <label for="key">Viiteavain (key):</label><br>
         <input type="text" id="key" name="key" required><br><br>
