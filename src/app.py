@@ -12,10 +12,9 @@ def index():
     return render_template("index.html", sources=all_sources)
 
 
-"""@app.route("/sources")
+@app.route("/sources")
 def sources():
-    all_sources = get_books()  # fetch all sources from the DB
-    return render_template("sources.html", sources=all_sources)"""
+    return redirect("/")
 
 
 @app.route("/sources/new", methods=["GET", "POST"])
@@ -35,6 +34,7 @@ def new_source():
             return redirect("/")
         except Exception as error:
             flash(str(error))
+            print(key, ref_type, author, title, year, journal, publisher)
             return render_template("new_reference.html")
         
     return render_template("new_reference.html")
@@ -56,9 +56,9 @@ def update_source():
     edit_book(source_key, [source_key, ref_type, author, title, year, journal, publisher])
     return redirect("/")
 
-"""@app.route("/")
+@app.route("/")
 def delete_source():
-    return redirect("/")"""
+    return redirect("/")
 
 @app.route("/new_todo")
 def new():

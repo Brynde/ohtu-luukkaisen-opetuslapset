@@ -54,5 +54,7 @@ def validate_book(key, ref_type, author, title, year, journal, publisher):
     validate_author(author)
     validate_title(title)
     validate_year(year)
-    validate_journal(journal)
-    validate_publisher(publisher)
+    if journal != "":
+        validate_journal(journal)
+    if publisher != "":
+        validate_publisher(publisher)
