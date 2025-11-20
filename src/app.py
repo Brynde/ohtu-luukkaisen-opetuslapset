@@ -53,8 +53,16 @@ def update_source():
     year = request.form.get("year")
     journal = request.form.get("journal")
     publisher = request.form.get("publisher")
-    edit_book(source_key, [source_key, ref_type, author, title, year, journal, publisher])
-    return redirect("/")
+    try:
+        validate_book(source_key, ref_type, author, title, year, journal, publisher)
+        edit_book(source_key, [source_key, ref_type, author, title, year, journal, publisher])
+        source = get_info(source_key)
+        return redirect("/")
+    except Exception as error:
+        flash(str(error))
+        print(source_key, ref_type, author, title, year, journal, publisher)
+        source = get_info(source_key)
+        return render_template("edit_reference.html", key=source_key, source=source)
 
 @app.route("/")
 def delete_source():
