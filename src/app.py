@@ -60,28 +60,6 @@ def update_source():
 def delete_source():
     return redirect("/")
 
-@app.route("/new_todo")
-def new():
-    return render_template("new_todo.html")
-
-
-@app.route("/create_todo", methods=["POST"])
-def todo_creation():
-    content = request.form.get("content")
-    try:
-        validate_book(content)
-        create_book(content)
-        return redirect("/")
-    except Exception as error:
-        flash(str(error))
-        return redirect("/new_todo")
-
-
-@app.route("/toggle_todo/<todo_id>", methods=["POST"])
-def toggle_todo(todo_id):
-    return redirect("/")
-
-
 if test_env:
     @app.route("/reset_db")
     def reset_database():
