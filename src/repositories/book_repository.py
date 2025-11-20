@@ -1,7 +1,6 @@
 from config import db
 from sqlalchemy import text
 
-from entities.todo import Todo
 from entities.book import Book
 
 def get_books():
