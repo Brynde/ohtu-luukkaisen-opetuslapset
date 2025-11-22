@@ -6,11 +6,41 @@ Test Setup       Reset Sources And Go To Starting Page
 
 *** Test Cases ***
 Click Add Sources
-    Click Link  + Add New Source
+    Click Link    + Add New Source
     New Source Form Should Be Open
 
-*** Keywords ***
+Add New Reference With Required Fields
+    Click Link    + Add New Source
+    New Source Form Should Be Open
+    Input Text    id=key         testikey1
+    Select From List By Value    id=ref_type    article
+    Input Text    id=author      Testaaja, Tero
+    Input Text    id=title       Testiartikkeli
+    Input Text    id=year        2024
+    Input Text    id=journal     Testilehti
+    Input Text    id=publisher   Testikustantaja
+    Click Button  Tallenna viite
+    Location Should Be    ${HOME_URL}
+    Page Should Contain   Testiartikkeli
 
+Missing Required Title Keeps Form Open
+    Click Link    + Add New Source
+    New Source Form Should Be Open
+    Input Text    id=key         puuttuva_title
+    Select From List By Value    id=ref_type    book
+    Input Text    id=author      Tekijä Testaaja
+    Input Text    id=year        2024
+    Click Button  Tallenna viite
+    Location Should Be    ${NEW_URL}
+    Title Should Be       Lisää uusi viite
+
+Back Link Goes To Home Page
+    Click Link    + Add New Source
+    New Source Form Should Be Open
+    Click Link    Takaisin viitelistaan
+    Location Should Be    ${HOME_URL}
+
+*** Keywords ***
 Reset Sources And Go To Starting Page
     Reset Sources
     Go To Starting Page
