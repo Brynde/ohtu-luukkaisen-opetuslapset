@@ -64,6 +64,14 @@ Sources
 
 <body>
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <h3>{{ message }}</h3>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <h1>Your Sources</h1>
 
 <a href="/sources/new" class="add-button">+ Add New Source</a>

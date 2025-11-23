@@ -1,6 +1,6 @@
 from flask import redirect, render_template, request, jsonify, flash
 from db_helper import reset_db
-from repositories.book_repository import get_books, create_book, get_info, edit_book
+from repositories.book_repository import get_books, create_book, get_info, edit_book, delete_book
 from config import app, test_env
 from util import validate_book
 
@@ -64,8 +64,12 @@ def update_source():
         source = get_info(source_key)
         return render_template("edit_reference.html", key=source_key, source=source)
 
-@app.route("/")
-def delete_source():
+@app.route("/sources/delete/<string:source_key>", methods=["POST"])
+def delete_source(source_key):
+    if delete_book(source_key):
+        flash("Deleted successfully!")
+    else:
+        flash("Deletion failed!")
     return redirect("/")
 
 if test_env:

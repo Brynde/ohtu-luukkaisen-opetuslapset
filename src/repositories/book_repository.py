@@ -30,11 +30,6 @@ def create_book(key, ref_type, author, title, year, journal, publisher):
     db.session.commit()
 
 def edit_book(source_key, content):
-    """Update book identified by source_key.
-    `content` can be a dict or a list/tuple in order:
-    [key, ref_type, author, title, year, journal, publisher]
-    Returns True if a row was updated.
-    """
     fields = ["key", "ref_type", "author", "title", "year", "journal", "publisher"]
 
     current = get_info(source_key)
@@ -85,3 +80,12 @@ def edit_book(source_key, content):
     db.session.execute(sql, params)
     db.session.commit()
     return True
+
+def delete_book(source_key):
+    if get_info(source_key) is None:
+        return False
+    sql = text("DELETE FROM books WHERE key = :key")
+    db.session.execute(sql, {"key": source_key})
+    db.session.commit()
+    return True
+
