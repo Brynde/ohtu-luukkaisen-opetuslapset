@@ -20,7 +20,7 @@ Add New Reference With Required Fields
     Input Text    id=journal     Testilehti
     Input Text    id=publisher   Testikustantaja
     Click Button  Tallenna viite
-    Location Should Be    ${HOME_URL}
+    Location Should Be    ${NEW_URL}
     Page Should Contain   Testiartikkeli
 
 Missing Required Title Keeps Form Open
@@ -34,10 +34,10 @@ Missing Required Title Keeps Form Open
     Location Should Be    ${NEW_URL}
     Title Should Be       Lisää uusi viite
 
-Back Link Goes To Home Page
+Back To Home Page Works
     Go To New Source Page
     New Source Form Should Be Open
-    Click Link    Takaisin viitelistaan
+    Go To Starting Page
     Location Should Be    ${HOME_URL}
 
 *** Keywords ***
