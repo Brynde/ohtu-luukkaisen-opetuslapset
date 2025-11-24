@@ -8,10 +8,6 @@
             color: red;
             font-weight: bold;
         }
-        .required-star {
-            color: red;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -29,23 +25,23 @@
 
     <form method="POST">
 
-        <label for="key">Viiteavain (key): <span class="required-star">*</span></label><br>
+        <label for="key">Viiteavain (key): <span class="required">*</span></label><br>
         <input type="text" id="key" name="key" required><br><br>
 
-        <label for="ref_type">Tyyppi: <span class="required-star">*</span></label><br>
+        <label for="ref_type">Tyyppi: <span class="required">*</span></label><br>
         <select id="ref_type" name="ref_type" required>
             <option value="article">article</option>
             <option value="book">book</option>
             <option value="inproceedings">inproceedings</option>
         </select><br><br>
 
-        <label for="author">Tekijä(t): <span class="required-star">*</span></label><br>
+        <label for="author">Tekijä(t): <span class="required">*</span></label><br>
         <input type="text" id="author" name="author" required><br><br>
 
-        <label for="title">Otsikko (title): <span class="required-star">*</span></label><br>
+        <label for="title">Otsikko (title): <span class="required">*</span></label><br>
         <input type="text" id="title" name="title" required><br><br>
 
-        <label for="year">Vuosi (year): <span class="required-star">*</span></label><br>
+        <label for="year">Vuosi (year): <span class="required">*</span></label><br>
         <input type="number" id="year" name="year" required><br><br>
 
         <label for="journal">Lehti / Konferenssi (journal/booktitle):</label><br>

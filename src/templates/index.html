@@ -86,7 +86,7 @@ Sources
 
     <h1>Your Sources</h1>
 
-<a href="/sources/new" class="add-button">+ Add New Source</a>
+<a href="/sources/new" class="add-button" id="new_source">+ Add New Source</a>
 
     {% if sources %}
         {% for source in sources %}
@@ -103,22 +103,25 @@ Sources
                 <br>
                 <h3>BibTeX code:</h3>
                 <div class="code-box">
-                    <p>@{{ source.ref_type }} {<br>
-                        &nbsp;     author = { {{ source.author }} }<br>
-                        &nbsp;     year = { {{ source.year }} }<br>
-                        &nbsp;     title = { {{ source.title }} }<br>
+                    <p>@{{ source.ref_type }} { {{ source.key }},<br>
+                        &nbsp;     author = { {{ source.author }} },<br>
+                        &nbsp;     year = { {{ source.year }} },<br>
+                        &nbsp;     title = { {{ source.title }} }
                         {% if source.journal %}
-                            &nbsp;     journal = { {{ source.journal }} }<br>
+                            ,<br>
+                            &nbsp;     journal = { {{ source.journal }} }
                         {% endif %}
                         {% if source.publisher %}
-                            &nbsp;     publisher = { {{ source.publisher }} }<br>
+                            ,<br>
+                            &nbsp;     publisher = { {{ source.publisher }} }
                         {% endif %}
+                        <br>
                     }
                     </p>
                 </div>
 
             <div class="buttons">
-                <a href="{{ url_for('edit_source', source_key=source.key) }}" class="edit-btn">Edit</a>
+                <button class="edit-btn"><a href="{{ url_for('edit_source', source_key=source.key) }}">Edit</a></button>
                 <form action="{{ url_for('delete_source', source_key=source.key) }}" method="post" style="display:inline">
                     <button class="delete-btn" type="submit">Delete</button>
                 </form>
