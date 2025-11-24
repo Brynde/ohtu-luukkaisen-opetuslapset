@@ -4,7 +4,9 @@ from sqlalchemy import text
 from entities.book import Book
 
 def get_books():
-    result = db.session.execute(text("SELECT * FROM books"))
+    result = db.session.execute(
+        text("SELECT * FROM books ORDER BY key COLLATE NOCASE")
+    )
     books = result.fetchall()
     return books
 
