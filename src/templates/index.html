@@ -59,6 +59,18 @@ Sources
             background-color: #f44336;
             color: white;
         }
+
+        .code-box{
+            background-color: #dbdbdb;
+            font-family: monospace;
+            width:fit-content;
+            padding-left: 3em;
+            padding-right: 3em;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 
@@ -87,6 +99,23 @@ Sources
                 <p><strong>Journal / Publisher:</strong> 
                    {{ source.journal if source.journal else source.publisher }}</p>
                 {% endif %}
+                
+                <br>
+                <h3>BibTeX code:</h3>
+                <div class="code-box">
+                    <p>@{{ source.ref_type }} {<br>
+                        &nbsp;     author = { {{ source.author }} }<br>
+                        &nbsp;     year = { {{ source.year }} }<br>
+                        &nbsp;     title = { {{ source.title }} }<br>
+                        {% if source.journal %}
+                            &nbsp;     journal = { {{ source.journal }} }<br>
+                        {% endif %}
+                        {% if source.publisher %}
+                            &nbsp;     publisher = { {{ source.publisher }} }<br>
+                        {% endif %}
+                    }
+                    </p>
+                </div>
 
             <div class="buttons">
                 <a href="{{ url_for('edit_source', source_key=source.key) }}" class="edit-btn">Edit</a>
