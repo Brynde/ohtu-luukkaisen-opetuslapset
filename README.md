@@ -36,3 +36,11 @@ Käynnistä sovellus
 ```
 python3 src/index.py
 ```
+## Definiton of done:
+
+ - Ominaisuus toiminnallisuudet toimivat halutulla tavalla
+ - Koodi on vertaisarvioitu dailyssä
+ - Kaikki testit on suoritettu hyväksytysti
+ - Dokumentaatio on ajantasalla
+ - Ryhmä on hyväksynyt ominaisuuden
+ - Ominaisuus on valmis tuotantoon
