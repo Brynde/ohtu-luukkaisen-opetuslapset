@@ -4,4 +4,5 @@
 - muistetaan, että pelkän main branchin käyttäminen vaatii kommunikaatiota siitä, milloin kukakin on työstämässä koodia ja mitä tekee, ettei tule konflikteja
 - yritetään jaksottaa työtä paremmin usealle päivälle
 - yksi ryhmästä lähti -> tiedostetaan että työtä on enemmän tulevissa sprinteissä per henkilö
-- kommunikaatio on ollut hyvää (tehdystä työstä ja työnjaosta), sprintin 1 tavoitteisiin on päästy toivotusti
+- kommunikaatio on ollut hyvää (tehdystä työstä ja työnjaosta)
+- koko ryhmän mielestä sprintin 1 tavoitteisiin on päästy toivotusti
