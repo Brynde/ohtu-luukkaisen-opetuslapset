@@ -33,6 +33,10 @@ Reset Sources
 New Source Form Should Be Open
     Title Should Be  Lisää uusi viite
 
+Home Page Should Be Open
+    Location Should Be  ${HOME_URL}
+    Title Should Be  Sources
+
 Go To Starting Page
     Go To  ${HOME_URL}
 

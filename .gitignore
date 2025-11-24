@@ -8,4 +8,5 @@ output.xml
 report.html
 *.png
 src/instance/
+testit.sh
 .coverage
