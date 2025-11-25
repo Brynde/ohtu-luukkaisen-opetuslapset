@@ -26,29 +26,44 @@
     <form method="POST">
 
         <label for="key">Viiteavain (key): <span class="required">*</span></label><br>
-        <input type="text" id="key" name="key" required><br><br>
+        <input type="text" id="key" name="key" required
+               value="{{ request.form.get('key', '') }}"><br><br>
 
         <label for="ref_type">Tyyppi: <span class="required">*</span></label><br>
         <select id="ref_type" name="ref_type" required>
-            <option value="article">article</option>
-            <option value="book">book</option>
-            <option value="inproceedings">inproceedings</option>
+            <option value="article"
+                {% if request.form.get('ref_type', 'article') == 'article' %}selected{% endif %}>
+                article
+            </option>
+            <option value="book"
+                {% if request.form.get('ref_type') == 'book' %}selected{% endif %}>
+                book
+            </option>
+            <option value="inproceedings"
+                {% if request.form.get('ref_type') == 'inproceedings' %}selected{% endif %}>
+                inproceedings
+            </option>
         </select><br><br>
 
         <label for="author">Tekijä(t): <span class="required">*</span></label><br>
-        <input type="text" id="author" name="author" required><br><br>
+        <input type="text" id="author" name="author" required
+               value="{{ request.form.get('author', '') }}"><br><br>
 
         <label for="title">Otsikko (title): <span class="required">*</span></label><br>
-        <input type="text" id="title" name="title" required><br><br>
+        <input type="text" id="title" name="title" required
+               value="{{ request.form.get('title', '') }}"><br><br>
 
         <label for="year">Vuosi (year): <span class="required">*</span></label><br>
-        <input type="number" id="year" name="year" required><br><br>
+        <input type="number" id="year" name="year" required
+               value="{{ request.form.get('year', '') }}"><br><br>
 
         <label for="journal">Lehti / Konferenssi (journal/booktitle):</label><br>
-        <input type="text" id="journal" name="journal"><br><br>
+        <input type="text" id="journal" name="journal"
+               value="{{ request.form.get('journal', '') }}"><br><br>
 
         <label for="publisher">Kustantaja (publisher):</label><br>
-        <input type="text" id="publisher" name="publisher"><br><br>
+        <input type="text" id="publisher" name="publisher"
+               value="{{ request.form.get('publisher', '') }}"><br><br>
 
         <button type="submit">Tallenna viite</button>
     </form>
