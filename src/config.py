@@ -11,8 +11,7 @@ print(f"Test environment: {test_env}")
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///local.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = getenv("SECRET_KEY")
+app.secret_key = getenv("SECRET_KEY",  "dev-secret-key-change-me")
 db = SQLAlchemy(app)
 
-#Väliaikainen robot-testejä varten
 sources = []
