@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Etsi ilmoitus</title>
+</head>
+
+<body>
+    <h1>Etsi ilmoitus</h1>
+
+    <form action="/sources/find_source" method="get">
+        <p>
+            <label for="query">Hakusana:</label> <input type="text" name="query" value="{{ query }}">
+        </p>
+        <input type="submit" value="Lähetä">
+    </form>
+
+    <p>
+        <a href="/">Palaa takaisin</a>
+    </p>
+
+    {% if query %}
+    <h2>Tulokset</h2>
+
+        {% if sources %}
+            {% for source in sources %}
+                <div class="source-card">
+                    <h3>{{ source.title }}</h3>
+                    <p><strong>Author:</strong> {{ source.author }}</p>
+                    <p><strong>Type:</strong> {{ source.ref_type }}</p>
+                    <p><strong>Year:</strong> {{ source.year }}</p>
+                    {% if source.journal or source.publisher %}
+                    <p><strong>Journal / Publisher:</strong> 
+                    {{ source.journal if source.journal else source.publisher }}</p>
+                    {% endif %}
+                    
+                    <br>
+                    <h3>BibTeX code:</h3>
+                    <div class="code-box">
+                        <p>@{{ source.ref_type }} { {{ source.key }},<br>
+                            &nbsp;     author = { {{ source.author }} },<br>
+                            &nbsp;     year = { {{ source.year }} },<br>
+                            &nbsp;     title = { {{ source.title }} }
+                            {% if source.journal %}
+                                ,<br>
+                                &nbsp;     journal = { {{ source.journal }} }
+                            {% endif %}
+                            {% if source.publisher %}
+                                ,<br>
+                                &nbsp;     publisher = { {{ source.publisher }} }
+                            {% endif %}
+                            <br>
+                        }
+                        </p>
+                    </div>
+
+                <div class="buttons">
+                    <button class="edit-btn"><a href="{{ url_for('edit_source', source_key=source.key) }}">Edit</a></button>
+                    <form action="{{ url_for('delete_source', source_key=source.key) }}" method="post" style="display:inline">
+                        <button class="delete-btn" type="submit">Delete</button>
+                    </form>
+                </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No sources found. Add a new source above!</p>
+        {% endif %}
+
+    {% endif %}
+</body>
+
+</html>

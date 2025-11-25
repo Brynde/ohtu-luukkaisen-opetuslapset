@@ -91,3 +91,18 @@ def delete_book(source_key):
     db.session.commit()
     return True
 
+def find_books(query):
+    sql = text("""SELECT key, ref_type, author, title, year, journal, publisher
+                  FROM books
+                  WHERE key     LIKE :q
+                    OR ref_type LIKE :q
+                    OR author   LIKE :q
+                    OR title    LIKE :q
+                    OR CAST(year AS TEXT) LIKE :q
+                    OR journal  LIKE :q
+                    OR publisher LIKE :q
+                  ORDER BY key COLLATE NOCASE
+               """)
+    like = f"%{query}%"
+    result = db.session.execute(sql, {"q": like})
+    return result.fetchall()
