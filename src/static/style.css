@@ -46,6 +46,12 @@ h1 {
     color: white;
 }
 
+a.edit-btn{
+    text-decoration: none;
+    color: white;
+}
+
+
 .delete-btn {
     background-color: #f44336;
     color: white;
