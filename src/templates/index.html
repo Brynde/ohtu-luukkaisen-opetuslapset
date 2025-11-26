@@ -23,7 +23,17 @@
         <div class="source-card">
             <h3>{{ source.title }}</h3>
             <p><strong>Kirjoittaja(t):</strong> {{ source.author }}</p>
-            <p><strong>Lähteen tyyppi:</strong> {{ source.ref_type }}</p>
+            <p><strong>Lähteen tyyppi:</strong>
+            {% if source.ref_type == 'book' %}
+                kirja
+            {% elif source.ref_type == 'inproceedings' %}
+                konferenssiartikkeli
+            {% elif source.ref_type == 'article' %}
+                artikkeli
+            {% else %}
+                {{ source.ref_type }}
+            {% endif %}
+            </p>
             <p><strong>Vuosi:</strong> {{ source.year }}</p>
             {% if source.journal or source.publisher %}
             <p><strong>Julkaisu / Kustantaja:</strong> 

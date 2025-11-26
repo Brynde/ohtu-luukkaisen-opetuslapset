@@ -17,9 +17,9 @@
         <label for="ref_type">Tyyppi:</label><br>
         {% set selected_type = request.form.get('ref_type', source.ref_type) %}
         <select id="ref_type" name="ref_type">
-            <option value="article" {% if selected_type == "article" %}selected{% endif %}>article</option>
-            <option value="book" {% if selected_type == "book" %}selected{% endif %}>book</option>
-            <option value="inproceedings" {% if selected_type == "inproceedings" %}selected{% endif %}>inprocee>
+            <option value="article" {% if selected_type == "artikkeli" %}selected{% endif %}>article</option>
+            <option value="book" {% if selected_type == "kirja" %}selected{% endif %}>book</option>
+            <option value="konferenssiartikkeli" {% if selected_type == "inproceedings" %}selected{% endif %}>inprocee>
         </select><br><br>
 
         <label for="author">Tekijä(t):</label><br>

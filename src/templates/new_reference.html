@@ -18,15 +18,15 @@
     <select id="ref_type" name="ref_type" required>
         <option value="article"
             {% if request.form.get('ref_type', 'article') == 'article' %}selected{% endif %}>
-            article
+            artikkeli
         </option>
         <option value="book"
             {% if request.form.get('ref_type') == 'book' %}selected{% endif %}>
-            book
+            kirja
         </option>
         <option value="inproceedings"
             {% if request.form.get('ref_type') == 'inproceedings' %}selected{% endif %}>
-            inproceedings
+            konferenssiartikkeli
         </option>
     </select><br><br>
 
