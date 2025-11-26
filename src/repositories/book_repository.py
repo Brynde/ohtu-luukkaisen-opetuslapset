@@ -91,18 +91,30 @@ def delete_book(source_key):
     db.session.commit()
     return True
 
-def find_books(query):
-    sql = text("""SELECT key, ref_type, author, title, year, journal, publisher
-                  FROM books
-                  WHERE key     LIKE :q
-                    OR ref_type LIKE :q
-                    OR author   LIKE :q
-                    OR title    LIKE :q
-                    OR CAST(year AS TEXT) LIKE :q
-                    OR journal  LIKE :q
-                    OR publisher LIKE :q
-                  ORDER BY key COLLATE NOCASE
-               """)
-    like = f"%{query}%"
-    result = db.session.execute(sql, {"q": like})
-    return result.fetchall()
+def find_books(query, ref_type=None):
+    query = (query or "").strip()
+    q = "%" if query == "" else f"%{query}%"
+
+    sql = (
+        "SELECT key, ref_type, author, title, year, journal, publisher "
+        "FROM books "
+        "WHERE (COALESCE(key,'') LIKE :q OR COALESCE(ref_type,'') LIKE :q "
+        "OR COALESCE(author,'') LIKE :q OR COALESCE(title,'') LIKE :q "
+        "OR COALESCE(CAST(year AS TEXT),'') LIKE :q OR COALESCE(journal,'') LIKE :q "
+        "OR COALESCE(publisher,'') LIKE :q)"
+    )
+    params = {"q": q}
+
+    if ref_type:
+        sql += " AND lower(COALESCE(ref_type,'')) = :ref_type"
+        params["ref_type"] = ref_type.strip().lower()
+
+    sql += " ORDER BY key COLLATE NOCASE"
+
+    result = db.session.execute(text(sql), params)
+    rows = result.fetchall()
+    return [
+        {"key": r[0], "ref_type": r[1], "author": r[2], "title": r[3],
+         "year": r[4], "journal": r[5], "publisher": r[6]}
+        for r in rows
+    ]

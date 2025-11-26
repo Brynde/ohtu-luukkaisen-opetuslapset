@@ -15,6 +15,16 @@
             <label for="query">Hae viitteitä:</label><br><br>
             <input type="text" name="query" value="{{ query }}">
         </p>
+
+        <p>
+            <label for="ref_type">Tyyppi:</label><br>
+            <select name="ref_type">
+                <option value="">Kaikki</option>
+                <option value="book" {% if ref_type == 'book' %}selected{% endif %}>kirja</option>
+                <option value="inproceedings" {% if ref_type == 'inproceedings' %}selected{% endif %}>konferenssiartikkeli</option>
+                <option value="article" {% if ref_type == 'article' %}selected{% endif %}>artikkeli</option>
+            </select>
+        </p>
         <input type="submit" value="Hae">
     </form><br><br>
 

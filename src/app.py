@@ -75,14 +75,12 @@ def delete_source(source_key):
 
 @app.route("/sources/find_source")
 def find_source():
-    query = request.args.get("query")
-    if query:
-        results = find_books(query)
-    else:
-        query = ""
-        results = []
-
-    return render_template("find_reference.html", query=query, sources=results)
+    query = request.args.get("query", "")
+    ref_type = request.args.get("ref_type", "")
+    print("find_source args:", dict(request.args))
+    results = find_books(query, ref_type=ref_type or None)
+    print(results)
+    return render_template("find_reference.html", query=query, ref_type=ref_type, sources=results)
 
 if test_env:
     @app.route("/reset_db")

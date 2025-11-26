@@ -9,16 +9,24 @@
 {% block body %}
 
     <form action="/sources/find_source" method="get">
-        <p>
-            <label for="query">Hae viitteitä:</label><br><br>
-            <input type="text" name="query" value="{{ query }}">
-        </p>
-        <input type="submit" value="Hae">
-    </form><br>
+            <p>
+                <label for="query">Hae viitteitä:</label><br><br>
+                <input type="text" name="query" value="{{ query }}">
+            </p>
+
+            <p>
+                <label for="ref_type">Tyyppi:</label><br>
+                <select name="ref_type">
+                    <option value="">Kaikki</option>
+                    <option value="book" {% if ref_type == 'book' %}selected{% endif %}>kirja</option>
+                    <option value="inproceedings" {% if ref_type == 'inproceedings' %}selected{% endif %}>konferenssiartikkeli</option>
+                    <option value="article" {% if ref_type == 'article' %}selected{% endif %}>artikkeli</option>
+                </select>
+            </p>
+            <input type="submit" value="Hae">
+        </form><br><br>
 
     <a href="/">Palaa etusivulle</a>
-
-    {% if query %}
     <h2>Hakutulokset</h2>
 
         {% if sources %}
@@ -26,7 +34,17 @@
                 <div class="source-card">
                     <h3>{{ source.title }}</h3>
                     <p><strong>Kirjoittaja(t):</strong> {{ source.author }}</p>
-                    <p><strong>Lähteen tyyppi:</strong> {{ source.ref_type }}</p>
+                    <p><strong>Lähteen tyyppi:</strong>
+                    {% if source.ref_type == 'book' %}
+                        kirja
+                    {% elif source.ref_type == 'inproceedings' %}
+                        konferenssiartikkeli
+                    {% elif source.ref_type == 'article' %}
+                        artikkeli
+                    {% else %}
+                        {{ source.ref_type }}
+                    {% endif %}
+                    </p>
                     <p><strong>Vuosi:</strong> {{ source.year }}</p>
                     {% if source.journal or source.publisher %}
                     <p><strong>Julkaisu / Kustantaja:</strong> 
@@ -62,8 +80,6 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p>Ei tuloksia hakusanalla: {{ query }}</p>
+            <p>Ei tuloksia {% if query %} hakusanalla: "{{ query }}" {% endif %} {% if query and ref_type %} ja {% endif %} {% if ref_type %} tyypillä: "{{ ref_type }}" {% endif %} </p>
         {% endif %}
-
-    {% endif %}
 {% endblock %}
