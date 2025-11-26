@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Etsi ilmoitus</title>
-</head>
+{% block title %}Etsi ilmoitus{% endblock %}
 
-<body>
+{% block header %}Etsi ilmoitus{% endblock %}
+
+{% block messages %}{{ super () }}{% endblock %}
+
+{% block body %}
     <h1>Etsi ilmoitus</h1>
 
     <form action="/sources/find_source" method="get">
@@ -67,6 +68,4 @@
         {% endif %}
 
     {% endif %}
-</body>
-
-</html>
+{% endblock %}

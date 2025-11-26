@@ -1,138 +1,57 @@
 {% extends "layout.html" %}
 
-{% block title %}
-Sources
-{% endblock %}
+{% block title %}Omat lähteet{% endblock %}
+
+{% block header %}Omat lähteet{% endblock %}
+
+{% block messages %}{{ super () }}{% endblock %}
 
 {% block body %}
 
-<style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f5f5f5;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .add-button {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .source-card {
-            background: white;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .source-card h3 {
-            margin: 0 0 5px;
-        }
-
-        .buttons {
-            margin-top: 10px;
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 6px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .edit-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .delete-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .code-box{
-            background-color: #dbdbdb;
-            font-family: monospace;
-            width:fit-content;
-            padding-left: 3em;
-            padding-right: 3em;
-            padding-top: 0.5em;
-            padding-bottom: 0.5em;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-    </style>
-</head>
-
-<body>
-
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-        <h3>{{ message }}</h3>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-    <h1>Your Sources</h1>
-
 <a href="/sources/new" class="add-button" id="new_source">+ Add New Source</a>
 
-    {% if sources %}
-        {% for source in sources %}
-            <div class="source-card">
-                <h3>{{ source.title }}</h3>
-                <p><strong>Author:</strong> {{ source.author }}</p>
-                <p><strong>Type:</strong> {{ source.ref_type }}</p>
-                <p><strong>Year:</strong> {{ source.year }}</p>
-                {% if source.journal or source.publisher %}
-                <p><strong>Journal / Publisher:</strong> 
-                   {{ source.journal if source.journal else source.publisher }}</p>
-                {% endif %}
-                
-                <br>
-                <h3>BibTeX code:</h3>
-                <div class="code-box">
-                    <p>@{{ source.ref_type }} { {{ source.key }},<br>
-                        &nbsp;     author = { {{ source.author }} },<br>
-                        &nbsp;     year = { {{ source.year }} },<br>
-                        &nbsp;     title = { {{ source.title }} }
-                        {% if source.journal %}
-                            ,<br>
-                            &nbsp;     journal = { {{ source.journal }} }
-                        {% endif %}
-                        {% if source.publisher %}
-                            ,<br>
-                            &nbsp;     publisher = { {{ source.publisher }} }
-                        {% endif %}
-                        <br>
-                    }
-                    </p>
-                </div>
-
-            <div class="buttons">
-                <button class="edit-btn"><a href="{{ url_for('edit_source', source_key=source.key) }}">Edit</a></button>
-                <form action="{{ url_for('delete_source', source_key=source.key) }}" method="post" style="display:inline">
-                    <button class="delete-btn" type="submit">Delete</button>
-                </form>
+{% if sources %}
+    {% for source in sources %}
+        <div class="source-card">
+            <h3>{{ source.title }}</h3>
+            <p><strong>Author:</strong> {{ source.author }}</p>
+            <p><strong>Type:</strong> {{ source.ref_type }}</p>
+            <p><strong>Year:</strong> {{ source.year }}</p>
+            {% if source.journal or source.publisher %}
+            <p><strong>Journal / Publisher:</strong> 
+                {{ source.journal if source.journal else source.publisher }}</p>
+            {% endif %}
+            
+            <br>
+            <h3>BibTeX code:</h3>
+            <div class="code-box">
+                <p>@{{ source.ref_type }} { {{ source.key }},<br>
+                    &nbsp;     author = { {{ source.author }} },<br>
+                    &nbsp;     year = { {{ source.year }} },<br>
+                    &nbsp;     title = { {{ source.title }} }
+                    {% if source.journal %}
+                        ,<br>
+                        &nbsp;     journal = { {{ source.journal }} }
+                    {% endif %}
+                    {% if source.publisher %}
+                        ,<br>
+                        &nbsp;     publisher = { {{ source.publisher }} }
+                    {% endif %}
+                    <br>
+                }
+                </p>
             </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>Lähteitä ei löytynyt. Lisää uusi viite yläpuolelta!</p>
-    {% endif %}
 
-</body>
-</html>
+        <div class="buttons">
+            <button class="edit-btn"><a href="{{ url_for('edit_source', source_key=source.key) }}">Edit</a></button>
+            <form action="{{ url_for('delete_source', source_key=source.key) }}" method="post" style="display:inline">
+                <button class="delete-btn" type="submit">Delete</button>
+            </form>
+        </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Lähteitä ei löytynyt. Lisää uusi viite yläpuolelta!</p>
+{% endif %}
 
 {% endblock %}

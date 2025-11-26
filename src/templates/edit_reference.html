@@ -1,19 +1,12 @@
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-    <meta charset="UTF-8">
-    <title>Muokkaa viitettä</title>
-</head>
-<body>
-    <h1>Muokkaa viitettä {{ source.key }}</h1>
+{% extends "layout.html" %}
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-        <h3>{{ message }}</h3>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+{% block title %} Muokkaa viitettä {{ source.key }}{% endblock %}
+
+{% block header %} Muokkaa viitettä {{ source.key }}{% endblock %}
+
+{% block messages %}{{ super () }}{% endblock %}
+
+{% block body %}
 
     <form action="/sources/update_item" method="POST">
 
@@ -55,5 +48,4 @@
     <p>
         <a href="/sources">Takaisin viitelistaan</a>
     </p>
-</body>
-</html>
+{% endblock %}

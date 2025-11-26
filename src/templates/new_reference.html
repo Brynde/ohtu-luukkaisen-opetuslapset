@@ -1,72 +1,56 @@
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-    <meta charset="UTF-8">
-    <title>Lisää uusi viite</title>
-    <style>
-        .required {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <h1>Lisää uusi viite</h1>
+{% extends "layout.html" %}
 
-    <p class="required">* merkityt kentät ovat pakollisia</p>
+{% block title %}Lisää uusi viite{% endblock %}
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-        <h3>{{ message }}</h3>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+{% block header %}Lisää uusi viite{% endblock %}
 
-    <form method="POST">
+{% block messages %}{{ super () }}{% endblock %}
 
-        <label for="key">Viiteavain (key): <span class="required">*</span></label><br>
-        <input type="text" id="key" name="key" required
-               value="{{ request.form.get('key', '') }}"><br><br>
+{% block body %}
 
-        <label for="ref_type">Tyyppi: <span class="required">*</span></label><br>
-        <select id="ref_type" name="ref_type" required>
-            <option value="article"
-                {% if request.form.get('ref_type', 'article') == 'article' %}selected{% endif %}>
-                article
-            </option>
-            <option value="book"
-                {% if request.form.get('ref_type') == 'book' %}selected{% endif %}>
-                book
-            </option>
-            <option value="inproceedings"
-                {% if request.form.get('ref_type') == 'inproceedings' %}selected{% endif %}>
-                inproceedings
-            </option>
-        </select><br><br>
+<form method="POST">
 
-        <label for="author">Tekijä(t): <span class="required">*</span></label><br>
-        <input type="text" id="author" name="author" required
-               value="{{ request.form.get('author', '') }}"><br><br>
+    <label for="key">Viiteavain (key): <span class="required">*</span></label><br>
+    <input type="text" id="key" name="key" required
+            value="{{ request.form.get('key', '') }}"><br><br>
 
-        <label for="title">Otsikko (title): <span class="required">*</span></label><br>
-        <input type="text" id="title" name="title" required
-               value="{{ request.form.get('title', '') }}"><br><br>
+    <label for="ref_type">Tyyppi: <span class="required">*</span></label><br>
+    <select id="ref_type" name="ref_type" required>
+        <option value="article"
+            {% if request.form.get('ref_type', 'article') == 'article' %}selected{% endif %}>
+            article
+        </option>
+        <option value="book"
+            {% if request.form.get('ref_type') == 'book' %}selected{% endif %}>
+            book
+        </option>
+        <option value="inproceedings"
+            {% if request.form.get('ref_type') == 'inproceedings' %}selected{% endif %}>
+            inproceedings
+        </option>
+    </select><br><br>
 
-        <label for="year">Vuosi (year): <span class="required">*</span></label><br>
-        <input type="number" id="year" name="year" required
-               value="{{ request.form.get('year', '') }}"><br><br>
+    <label for="author">Tekijä(t): <span class="required">*</span></label><br>
+    <input type="text" id="author" name="author" required
+            value="{{ request.form.get('author', '') }}"><br><br>
 
-        <label for="journal">Lehti / Konferenssi (journal/booktitle):</label><br>
-        <input type="text" id="journal" name="journal"
-               value="{{ request.form.get('journal', '') }}"><br><br>
+    <label for="title">Otsikko (title): <span class="required">*</span></label><br>
+    <input type="text" id="title" name="title" required
+            value="{{ request.form.get('title', '') }}"><br><br>
 
-        <label for="publisher">Kustantaja (publisher):</label><br>
-        <input type="text" id="publisher" name="publisher"
-               value="{{ request.form.get('publisher', '') }}"><br><br>
+    <label for="year">Vuosi (year): <span class="required">*</span></label><br>
+    <input type="number" id="year" name="year" required
+            value="{{ request.form.get('year', '') }}"><br><br>
 
-        <button type="submit">Tallenna viite</button>
-    </form>
+    <label for="journal">Lehti / Konferenssi (journal/booktitle):</label><br>
+    <input type="text" id="journal" name="journal"
+            value="{{ request.form.get('journal', '') }}"><br><br>
 
-</body>
-</html>
+    <label for="publisher">Kustantaja (publisher):</label><br>
+    <input type="text" id="publisher" name="publisher"
+            value="{{ request.form.get('publisher', '') }}"><br><br>
+
+    <button type="submit">Tallenna viite</button>
+</form>
+
+{% endblock %}
