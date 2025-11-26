@@ -67,9 +67,9 @@ def update_source():
 @app.route("/sources/delete/<string:source_key>", methods=["POST"])
 def delete_source(source_key):
     if delete_book(source_key):
-        flash("Deleted successfully!")
+        flash("Poisto onnistui!")
     else:
-        flash("Deletion failed!")
+        flash("Poisto epäonnistui!")
     return redirect("/")
 
 
