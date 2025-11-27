@@ -22,7 +22,7 @@ def build_bibtex(key, ref_type, author, title, year, journal, publisher):
 
 def get_books():
     result = db.session.execute(
-        text("SELECT * FROM books ORDER BY key COLLATE NOCASE")
+        text("SELECT * FROM books ORDER BY title COLLATE NOCASE")
     )
     books = result.fetchall()
     return books
