@@ -86,4 +86,9 @@ if test_env:
     @app.route("/reset_db")
     def reset_database():
         reset_db()
+        # create_book(key, ref_type, author, title, year, journal, publisher)
+        create_book("LuukProjekti", "article", "Luukkaisen opetuslapset", "Miten saada miniprojektista täydet pisteet", 2025, "Helsingin Sanomat", "")
+        create_book("EricCaterpillar", "book", "Eric Carle", "The Very Hungry Caterpillar", 1969, "", "World Publishing Company")
+        create_book("ShakespRomeo", "book", "William Shakespeare", "Romeo and Juliet", 1597, "", "")
+        create_book("ProdLosses", "inproceedings", "H. Gomez, K. Silva", "Productivity Losses Associated with Saying ‘Just One More Episode’", 2020, "Proceedings of the Global Conference on Questionable Life Choices", "")
         return jsonify({"message": "db reset"})
