@@ -1,0 +1,37 @@
+[MASTER]
+ignore=tests
+jobs=1
+extension-pkg-whitelist=
+load-plugins=
+persistent=no
+
+[MESSAGES CONTROL]
+disable=
+    C0114,  # missing-module-docstring
+    C0115,  # missing-class-docstring
+    C0116,  # missing-function-docstring
+    R0903,  # too-few-public-methods
+
+enable=all
+
+[FORMAT]
+max-line-length=100
+
+[DESIGN]
+max-args=6
+max-locals=20
+max-branches=12
+max-statements=50
+max-returns=6
+max-nested-blocks=4
+max-attributes=10
+max-public-methods=25
+
+[TYPECHECK]
+ignored-modules=
+
+[REPORTS]
+score=yes
+
+[SIMILARITIES]
+min-similarity-lines=5
