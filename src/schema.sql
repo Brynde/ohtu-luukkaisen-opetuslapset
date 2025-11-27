@@ -6,5 +6,6 @@ CREATE TABLE books (
     title TEXT,
     year INTEGER,
     journal TEXT,
-    publisher TEXT
+    publisher TEXT,
+    bibtex TEXT
 );

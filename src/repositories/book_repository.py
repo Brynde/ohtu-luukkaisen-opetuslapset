@@ -1,7 +1,24 @@
-from config import db
 from sqlalchemy import text
+from config import db
 
-from entities.book import Book
+def build_bibtex(key, ref_type, author, title, year, journal, publisher):
+    ref_type = (ref_type or "").strip()
+    key = (key or "").strip()
+    parts = []
+    if author:
+        parts.append(f"  author = {{{author}}}")
+    if year is not None and year != "":
+        parts.append(f"  year = {{{year}}}")
+    if title:
+        parts.append(f"  title = {{{title}}}")
+    if journal:
+        parts.append(f"  journal = {{{journal}}}")
+    if publisher:
+        parts.append(f"  publisher = {{{publisher}}}")
+
+    body = ",\n".join(parts)
+    bib = f"@{ref_type}{{{key},\n{body}\n}}\n"
+    return bib
 
 def get_books():
     result = db.session.execute(
@@ -11,7 +28,7 @@ def get_books():
     return books
 
 def get_info(source_key):
-    sql = text("SELECT key, ref_type, author, title, year, journal, publisher FROM books WHERE key = :key")
+    sql = text("SELECT key, ref_type, author, title, year, journal, publisher, bibtex FROM books WHERE key = :key")
     result = db.session.execute(sql, {"key": source_key})
     book_info = result.fetchone()
     if book_info is None:
@@ -24,11 +41,26 @@ def get_info(source_key):
         "year": book_info[4],
         "journal": book_info[5],
         "publisher": book_info[6],
+        "bibtex": book_info[7]
     }
 
+def update_bibtex(key):
+    sql = text("SELECT key, ref_type, author, title, year, journal, publisher FROM books WHERE key = :key")
+    row = db.session.execute(sql, {"key": key}).fetchone()
+    if row is None:
+        return None
+
+    # row columns: key, ref_type, author, title, year, journal, publisher
+    bib = build_bibtex(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+    update_sql = text("UPDATE books SET bibtex = :bib WHERE key = :key")
+    db.session.execute(update_sql, {"bib": bib, "key": key})
+    db.session.commit()
+    return bib
+
 def create_book(key, ref_type, author, title, year, journal, publisher):
-    sql = text("INSERT INTO books (key, ref_type, author, title, year, journal, publisher) VALUES (:key, :ref_type, :author, :title, :year, :journal, :publisher)")
-    db.session.execute(sql, {"key": key, "ref_type": ref_type, "author": author, "title": title, "year": year, "journal": journal, "publisher": publisher})
+    bibtex = build_bibtex(key, ref_type, author, title, year, journal, publisher)
+    sql = text("INSERT INTO books (key, ref_type, author, title, year, journal, publisher, bibtex) VALUES (:key, :ref_type, :author, :title, :year, :journal, :publisher, :bibtex)")
+    db.session.execute(sql, {"key": key, "ref_type": ref_type, "author": author, "title": title, "year": year, "journal": journal, "publisher": publisher, "bibtex": bibtex})
     db.session.commit()
 
 def edit_book(source_key, content):
@@ -81,6 +113,7 @@ def edit_book(source_key, content):
     sql = text(f"UPDATE books SET {', '.join(set_clauses)} WHERE key = :source_key")
     db.session.execute(sql, params)
     db.session.commit()
+    update_bibtex(source_key)
     return True
 
 def delete_book(source_key):
@@ -96,7 +129,7 @@ def find_books(query, ref_type=None):
     q = "%" if query == "" else f"%{query}%"
 
     sql = (
-        "SELECT key, ref_type, author, title, year, journal, publisher "
+        "SELECT key, ref_type, author, title, year, journal, publisher, bibtex "
         "FROM books "
         "WHERE (COALESCE(key,'') LIKE :q OR COALESCE(ref_type,'') LIKE :q "
         "OR COALESCE(author,'') LIKE :q OR COALESCE(title,'') LIKE :q "
@@ -115,6 +148,6 @@ def find_books(query, ref_type=None):
     rows = result.fetchall()
     return [
         {"key": r[0], "ref_type": r[1], "author": r[2], "title": r[3],
-         "year": r[4], "journal": r[5], "publisher": r[6]}
+         "year": r[4], "journal": r[5], "publisher": r[6], "bibtex": r[7]}
         for r in rows
     ]
