@@ -27,16 +27,17 @@ def new_source():
         year = request.form.get("year")
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
-        
+        doi = request.form.get("doi")
+
         try:
             validate_book(key, ref_type, author, title, year, journal, publisher)
-            create_book(key, ref_type, author, title, year, journal, publisher)
+            create_book(key, ref_type, author, title, year, journal, publisher, doi)
             return redirect("/")
         except Exception as error:
             flash(str(error))
-            print(key, ref_type, author, title, year, journal, publisher)
+            print(key, ref_type, author, title, year, journal, publisher, doi)
             return render_template("new_reference.html")
-        
+
     return render_template("new_reference.html")
 
 @app.route("/sources/edit/<string:source_key>")
@@ -53,16 +54,18 @@ def update_source():
     year = request.form.get("year")
     journal = request.form.get("journal")
     publisher = request.form.get("publisher")
+    doi = request.form.get("doi")
+
     try:
         validate_book(source_key, ref_type, author, title, year, journal, publisher)
-        edit_book(source_key, [source_key, ref_type, author, title, year, journal, publisher])
-        source = get_info(source_key)
+        edit_book(source_key, [source_key, ref_type, author, title, year, journal, publisher, doi])
         return redirect("/")
     except Exception as error:
         flash(str(error))
-        print(source_key, ref_type, author, title, year, journal, publisher)
+        print(source_key, ref_type, author, title, year, journal, publisher, doi)
         source = get_info(source_key)
         return render_template("edit_reference.html", key=source_key, source=source)
+
 
 @app.route("/sources/delete/<string:source_key>", methods=["POST"])
 def delete_source(source_key):

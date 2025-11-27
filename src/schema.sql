@@ -7,5 +7,6 @@ CREATE TABLE books (
     year INTEGER,
     journal TEXT,
     publisher TEXT,
+    doi TEXT,
     bibtex TEXT
 );

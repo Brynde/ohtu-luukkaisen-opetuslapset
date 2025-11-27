@@ -28,7 +28,7 @@ def get_books():
     return books
 
 def get_info(source_key):
-    sql = text("SELECT key, ref_type, author, title, year, journal, publisher, bibtex FROM books WHERE key = :key")
+    sql = text("SELECT key, ref_type, author, title, year, journal, publisher, doi, bibtex FROM books WHERE key = :key")
     result = db.session.execute(sql, {"key": source_key})
     book_info = result.fetchone()
     if book_info is None:
@@ -41,7 +41,8 @@ def get_info(source_key):
         "year": book_info[4],
         "journal": book_info[5],
         "publisher": book_info[6],
-        "bibtex": book_info[7]
+        "doi": book_info[7],
+        "bibtex": book_info[8]
     }
 
 def update_bibtex(key):
@@ -50,21 +51,33 @@ def update_bibtex(key):
     if row is None:
         return None
 
-    # row columns: key, ref_type, author, title, year, journal, publisher
     bib = build_bibtex(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
     update_sql = text("UPDATE books SET bibtex = :bib WHERE key = :key")
     db.session.execute(update_sql, {"bib": bib, "key": key})
     db.session.commit()
     return bib
 
-def create_book(key, ref_type, author, title, year, journal, publisher):
+def create_book(key, ref_type, author, title, year, journal, publisher, doi):
     bibtex = build_bibtex(key, ref_type, author, title, year, journal, publisher)
-    sql = text("INSERT INTO books (key, ref_type, author, title, year, journal, publisher, bibtex) VALUES (:key, :ref_type, :author, :title, :year, :journal, :publisher, :bibtex)")
-    db.session.execute(sql, {"key": key, "ref_type": ref_type, "author": author, "title": title, "year": year, "journal": journal, "publisher": publisher, "bibtex": bibtex})
+    sql = text(
+        "INSERT INTO books (key, ref_type, author, title, year, journal, publisher, doi, bibtex) "
+        "VALUES (:key, :ref_type, :author, :title, :year, :journal, :publisher, :doi, :bibtex)"
+    )
+    db.session.execute(sql, {
+        "key": key,
+        "ref_type": ref_type,
+        "author": author,
+        "title": title,
+        "year": year,
+        "journal": journal,
+        "publisher": publisher,
+        "doi": doi,
+        "bibtex": bibtex
+    })
     db.session.commit()
 
 def edit_book(source_key, content):
-    fields = ["key", "ref_type", "author", "title", "year", "journal", "publisher"]
+    fields = ["key", "ref_type", "author", "title", "year", "journal", "publisher", "doi"]
 
     current = get_info(source_key)
     if current is None:
@@ -72,8 +85,9 @@ def edit_book(source_key, content):
 
     if isinstance(content, (list, tuple)):
         if len(content) != len(fields):
-            raise ValueError("content list must have 7 elements")
+            raise ValueError("content list must have 8 elements")
         new = dict(zip(fields, content))
+
     elif isinstance(content, dict):
         new = content.copy()
     else:
@@ -129,12 +143,12 @@ def find_books(query, ref_type=None):
     q = "%" if query == "" else f"%{query}%"
 
     sql = (
-        "SELECT key, ref_type, author, title, year, journal, publisher, bibtex "
+        "SELECT key, ref_type, author, title, year, journal, publisher, doi, bibtex "
         "FROM books "
         "WHERE (COALESCE(key,'') LIKE :q OR COALESCE(ref_type,'') LIKE :q "
         "OR COALESCE(author,'') LIKE :q OR COALESCE(title,'') LIKE :q "
         "OR COALESCE(CAST(year AS TEXT),'') LIKE :q OR COALESCE(journal,'') LIKE :q "
-        "OR COALESCE(publisher,'') LIKE :q)"
+        "OR COALESCE(publisher,'') LIKE :q OR COALESCE(doi,'') LIKE :q)"
     )
     params = {"q": q}
 
@@ -147,7 +161,16 @@ def find_books(query, ref_type=None):
     result = db.session.execute(text(sql), params)
     rows = result.fetchall()
     return [
-        {"key": r[0], "ref_type": r[1], "author": r[2], "title": r[3],
-         "year": r[4], "journal": r[5], "publisher": r[6], "bibtex": r[7]}
+        {
+            "key": r[0],
+            "ref_type": r[1],
+            "author": r[2],
+            "title": r[3],
+            "year": r[4],
+            "journal": r[5],
+            "publisher": r[6],
+            "doi": r[7],
+            "bibtex": r[8],
+        }
         for r in rows
     ]

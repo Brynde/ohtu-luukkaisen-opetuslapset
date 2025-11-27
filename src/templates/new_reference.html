@@ -48,7 +48,11 @@
 
     <label for="publisher">Kustantaja (publisher):</label><br>
     <input type="text" id="publisher" name="publisher"
-            value="{{ request.form.get('publisher', '') }}"><br><br>
+           value="{{ request.form.get('publisher', '') }}"><br><br>
+
+    <label for="doi">DOI:</label><br>
+    <input type="text" id="doi" name="doi"
+           value="{{ request.form.get('doi', '') }}"><br><br>
 
     <button type="submit">Tallenna viite</button>
 </form>
