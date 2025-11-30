@@ -3,6 +3,7 @@ from db_helper import reset_db
 from repositories.book_repository import get_books, create_book, get_info, edit_book, delete_book, find_books
 from config import app, test_env
 from util import validate_book
+from sqlalchemy.exc import IntegrityError
 
 
 @app.route("/")
@@ -33,12 +34,14 @@ def new_source():
         doi = request.form.get("doi")
 
         try:
-            validate_book(key, ref_type, author, title, year, journal, publisher)
+            validate_book(key, ref_type, author, title, year, journal, publisher, doi)
             create_book(key, ref_type, author, title, year, journal, publisher, doi)
             return redirect("/")
+        except IntegrityError:
+            flash("Viiteavain on jo käytössä. Anna jokaiselle lähteelle yksilöllinen avain.")
+            return render_template("new_reference.html")
         except Exception as error:
             flash(str(error))
-            print(key, ref_type, author, title, year, journal, publisher, doi)
             return render_template("new_reference.html")
 
     return render_template("new_reference.html")
@@ -83,18 +86,17 @@ def delete_source(source_key):
 def find_source():
     query = request.args.get("query", "")
     ref_type = request.args.get("ref_type", "")
-    print("find_source args:", dict(request.args))
-    results = find_books(query, ref_type=ref_type or None)
-    print(results)
-    return render_template("find_reference.html", query=query, ref_type=ref_type, sources=results)
+    doi_query = request.args.get("doi_query", "")
 
-if test_env:
-    @app.route("/reset_db")
-    def reset_database():
-        reset_db()
-        # create_book(key, ref_type, author, title, year, journal, publisher)
-        create_book("LuukProjekti", "article", "Luukkaisen opetuslapset", "Miten saada miniprojektista täydet pisteet", 2025, "Helsingin Sanomat", "")
-        create_book("EricCaterpillar", "book", "Eric Carle", "The Very Hungry Caterpillar", 1969, "", "World Publishing Company")
-        create_book("ShakespRomeo", "book", "William Shakespeare", "Romeo and Juliet", 1597, "", "")
-        create_book("ProdLosses", "inproceedings", "H. Gomez, K. Silva", "Productivity Losses Associated with Saying ‘Just One More Episode’", 2020, "Proceedings of the Global Conference on Questionable Life Choices", "")
-        return jsonify({"message": "db reset"})
+    print("find_source args:", dict(request.args))
+
+    results = find_books(query, ref_type=ref_type or None, doi_query=doi_query or None)
+    print(results)
+
+    return render_template(
+        "index.html",
+        query=query,
+        ref_type=ref_type,
+        doi_query=doi_query,
+        sources=results,
+    )

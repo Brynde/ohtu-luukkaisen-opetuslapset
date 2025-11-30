@@ -48,7 +48,7 @@ def validate_publisher(publisher):
     if len(publisher) > 100:
           raise UserInputError("Kustantajan nimen pituus ei saa ylittää 100 merkkiä")
 
-def validate_book(key, ref_type, author, title, year, journal, publisher):
+def validate_book(key, ref_type, author, title, year, journal, publisher, doi):
     validate_key(key)
     validate_ref_type(ref_type)
     validate_author(author)
