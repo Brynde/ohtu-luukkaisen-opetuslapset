@@ -17,6 +17,11 @@
         </p>
 
         <p>
+            <label for="doi_query">Hae DOI-tunnisteella (tarkka haku):</label><br>
+            <input type="text" id="doi_query" name="doi_query" value="{{ doi_query }}">
+        </p>
+
+        <p>
             <label for="ref_type">Tyyppi:</label><br>
             <select name="ref_type">
                 <option value="">Kaikki</option>
@@ -46,10 +51,10 @@
             </p>
             <p><strong>Vuosi:</strong> {{ source.year }}</p>
             {% if source.journal or source.publisher %}
-            <p><strong>Julkaisu / Kustantaja:</strong> 
+            <p><strong>Julkaisu / Kustantaja:</strong>
                 {{ source.journal if source.journal else source.publisher }}</p>
             {% endif %}
-            
+
             <br>
             <h3>BibTeX koodi:</h3>
             <div class="bib-controls">
@@ -117,6 +122,5 @@ function fallbackCopy(text, buttonEventTarget) {
   }
 }
 </script>
-
 
 {% endblock %}

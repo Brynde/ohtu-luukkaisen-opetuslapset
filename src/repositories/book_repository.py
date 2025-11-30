@@ -138,7 +138,7 @@ def delete_book(source_key):
     db.session.commit()
     return True
 
-def find_books(query, ref_type=None):
+def find_books(query, ref_type=None, doi_query=None):
     query = (query or "").strip()
     q = "%" if query == "" else f"%{query}%"
 
@@ -148,13 +148,17 @@ def find_books(query, ref_type=None):
         "WHERE (COALESCE(key,'') LIKE :q OR COALESCE(ref_type,'') LIKE :q "
         "OR COALESCE(author,'') LIKE :q OR COALESCE(title,'') LIKE :q "
         "OR COALESCE(CAST(year AS TEXT),'') LIKE :q OR COALESCE(journal,'') LIKE :q "
-        "OR COALESCE(publisher,'') LIKE :q OR COALESCE(doi,'') LIKE :q)"
+        "OR COALESCE(publisher,'') LIKE :q)"
     )
     params = {"q": q}
 
     if ref_type:
         sql += " AND lower(COALESCE(ref_type,'')) = :ref_type"
         params["ref_type"] = ref_type.strip().lower()
+
+    if doi_query:
+        sql += " AND COALESCE(doi,'') = :doi_query"
+        params["doi_query"] = doi_query.strip()
 
     sql += " ORDER BY key COLLATE NOCASE"
 

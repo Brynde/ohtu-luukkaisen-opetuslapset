@@ -5,11 +5,14 @@ from config import app, test_env
 from util import validate_book
 
 
-
 @app.route("/")
 def index():
-    all_sources = get_books()  # fetch all sources from the DB
-    return render_template("index.html", sources=all_sources)
+    doi_query = request.args.get("doi_query", "").strip()
+    if doi_query:
+        sources = find_books("", doi_query=doi_query)
+    else:
+        sources = get_books()
+    return render_template("index.html", sources=sources, doi_query=doi_query)
 
 
 @app.route("/sources")
