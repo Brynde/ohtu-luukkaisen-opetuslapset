@@ -55,6 +55,17 @@
                 {{ source.journal if source.journal else source.publisher }}</p>
             {% endif %}
 
+            {# DOI-nappi + piilotettu DOI, vain jos doi on olemassa #}
+            {% if source.doi %}
+            <p>
+                <strong>DOI:</strong>
+                <button type="button" class="toggle-doi" data-target="doi-{{ source.key }}">Näytä DOI</button>
+            </p>
+            <p id="doi-{{ source.key }}" class="doicode" style="display:none; white-space: pre-wrap;">
+                {{ source.doi }}
+            </p>
+            {% endif %}
+
             <br>
             <h3>BibTeX koodi:</h3>
             <div class="bib-controls">
@@ -103,6 +114,15 @@ document.addEventListener('click', (e) => {
     } else {
       fallbackCopy(text, e);
     }
+  }
+
+  // DOI-napin togglaus
+  if (e.target.matches('.toggle-doi')) {
+    const id = e.target.dataset.target;
+    const el = document.getElementById(id);
+    const shown = el.style.display !== 'none';
+    el.style.display = shown ? 'none' : 'block';
+    e.target.textContent = shown ? 'Näytä DOI' : 'Piilota DOI';
   }
 });
 function fallbackCopy(text, buttonEventTarget) {
