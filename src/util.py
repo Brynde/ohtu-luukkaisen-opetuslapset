@@ -33,7 +33,6 @@ def validate_year(year):
         raise UserInputError("Vuoden tulee olla numero")
     
     
-    
 def validate_journal(journal):
     if len(journal) < 5:
         raise UserInputError("Lehden tai konferenssin nimen tulee olla vähintään 5 merkkiä pitkä")
@@ -48,7 +47,7 @@ def validate_publisher(publisher):
     if len(publisher) > 100:
           raise UserInputError("Kustantajan nimen pituus ei saa ylittää 100 merkkiä")
 
-def validate_book(key, ref_type, author, title, year, journal, publisher, doi):
+def validate_book(key, ref_type, author, title, year, journal, publisher, doi=None):
     validate_key(key)
     validate_ref_type(ref_type)
     validate_author(author)
