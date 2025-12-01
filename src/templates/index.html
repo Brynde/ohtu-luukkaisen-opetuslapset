@@ -33,6 +33,17 @@
         <input type="submit" value="Hae">
     </form><br><br>
 
+    <form method="get">
+        <label for="sort">Lajittele lähteet</label>
+        <select name="sort">
+            <option value="title">Otsikon mukaan A-Ö</option>
+            <option value="title DESC">Otsikon mukaan Ö-A</option>
+            <option value="year DESC">Uusin ensin</option>
+            <option value="year">Vanhin ensin</option>
+        </select>
+        <input type="submit" value="Lajittele">
+    </form>
+
 {% if sources %}
     {% for source in sources %}
         <div class="source-card">

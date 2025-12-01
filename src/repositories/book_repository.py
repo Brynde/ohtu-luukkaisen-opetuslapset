@@ -20,9 +20,16 @@ def build_bibtex(key, ref_type, author, title, year, journal, publisher):
     bib = f"@{ref_type}{{{key},\n{body}\n}}\n"
     return bib
 
-def get_books():
+def get_books(criteria):
+    if criteria == None:
+        criteria = "year"
+    
+    types = ["title DESC", "title", "year DESC", "year", "author"]
+    if criteria not in types:
+        raise ValueError("Lajittelutyyppiä ei löydy")
+
     result = db.session.execute(
-        text("SELECT * FROM books ORDER BY title COLLATE NOCASE")
+        text(f"SELECT * FROM books ORDER BY {criteria}")
     )
     books = result.fetchall()
     return books
