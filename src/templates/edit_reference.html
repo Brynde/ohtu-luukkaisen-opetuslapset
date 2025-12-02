@@ -42,6 +42,27 @@
         <input type="text" id="publisher" name="publisher"
                value="{{ request.form.get('publisher', source.publisher) }}"><br><br>
 
+        <label for="tags">Tagit:</label><br>
+        <div class="tags-dropdown">
+        <button type="button" id="tags-toggle">Valitse tagit ▾</button>
+        <div id="tags-panel" class="hidden panel" aria-hidden="true">
+            <div class="tags-list" style="max-height:200px;overflow:auto;">
+            {% for t in tags|default([]) %}
+                <label style="display:block;padding:2px">
+                <input type="checkbox" name="tags" value="{{ t }}"
+                    {% if t in selected_tags %}checked{% endif %}>
+                {{ t }}
+                </label>
+            {% endfor %}
+            </div>
+            <hr>
+            <label for="new_tags">Lisää uusia tageja (pilkuilla tai rivinvaihdolla):</label><br>
+            <textarea id="new_tags" name="new_tags" rows="3" style="width:100%">{{ request.form.get('new_tags', '') }}</textarea>
+            <div style="margin-top:6px;font-size:0.9em;color:#555">Uudet tagit luodaan lomakkeen lähetyksessä.</div>
+        </div>
+        </div>
+        <br><br>
+
         <label for="doi">DOI:</label><br>
         <input type="text" id="doi" name="doi"
                value="{{ request.form.get('doi', source.doi) }}"><br><br>
@@ -52,5 +73,20 @@
     <p>
         <a href="/sources">Takaisin viitelistaan</a>
     </p>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const toggle = document.getElementById('tags-toggle');
+  const panel = document.getElementById('tags-panel');
+  if (!toggle || !panel) return;
+  toggle.addEventListener('click', function () {
+    panel.classList.toggle('hidden');
+    panel.setAttribute('aria-hidden', panel.classList.contains('hidden'));
+  });
+  document.addEventListener('click', function (e) {
+    if (!panel.contains(e.target) && e.target !== toggle) panel.classList.add('hidden');
+  });
+});
+</script>
 
 {% endblock %}

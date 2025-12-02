@@ -1,10 +1,24 @@
 from flask import redirect, render_template, request, jsonify, flash
 from db_helper import reset_db
 from repositories.book_repository import get_books, create_book, get_info, edit_book, delete_book, find_books
-from config import app, test_env
-from util import validate_book
+from config import app, test_env, db
+from util import validate_book, UserInputError
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import text
+from repositories.tag_repository import get_tags, create_tag, attach_tag, find_tags
+import re
 
+def _row_to_dict(row):
+    # pitää tehdä että saa tagit lisättyä myös
+    if isinstance(row, dict):
+        return row
+    try:
+        return dict(row._mapping)
+    except Exception:
+        try:
+            return dict(row)
+        except Exception:
+            return {}
 
 @app.route("/")
 def index():
@@ -15,7 +29,18 @@ def index():
         criteria = request.args.get("sort")
         print(criteria)
         sources = get_books(criteria)
-    return render_template("index.html", sources=sources, doi_query=doi_query)
+
+    dict_sources = [_row_to_dict(s) for s in sources]
+    tags_map = find_tags(dict_sources)
+    for s in dict_sources:
+        s_tags = []
+        if "id" in s and s["id"] is not None and s["id"] in tags_map:
+            s_tags = tags_map.get(s["id"], [])
+        elif "key" in s and s["key"] in tags_map:
+            s_tags = tags_map.get(s["key"], [])
+        s["tags"] = s_tags
+
+    return render_template("index.html", sources=dict_sources, doi_query=doi_query)
 
 
 @app.route("/sources")
@@ -25,6 +50,7 @@ def sources():
 
 @app.route("/sources/new", methods=["GET", "POST"])
 def new_source():
+    tags = get_tags()
     if request.method == "POST":
         key = request.form.get("key")
         ref_type = request.form.get("ref_type")
@@ -34,24 +60,50 @@ def new_source():
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
         doi = request.form.get("doi")
-
+    
         try:
             validate_book(key, ref_type, author, title, year, journal, publisher, doi)
-            create_book(key, ref_type, author, title, year, journal, publisher, doi)
+            book_id = create_book(key, ref_type, author, title, year, journal, publisher, doi)
+
+            selected_tags = request.form.getlist('tags')
+            new_tags_raw = request.form.get('new_tags', '')
+            new_tags = [p.strip() for p in re.split(r'[,\\n]+', new_tags_raw) if p.strip()]
+            all_tag_names = []
+            for tag in selected_tags + new_tags:
+                if tag and tag not in all_tag_names:
+                    all_tag_names.append(tag)
+            for tag_name in all_tag_names:
+                try:
+                    tag_id = create_tag(tag_name)
+                    attach_tag(book_id, tag_id)
+                except UserInputError as error:
+                    flash(str(error))
+                    return render_template("new_reference.html", tags=tags)
+            db.session.commit()
             return redirect("/")
         except IntegrityError:
             flash("Viiteavain on jo käytössä. Anna jokaiselle lähteelle yksilöllinen avain.")
-            return render_template("new_reference.html")
+            return render_template("new_reference.html", tags=tags)
         except Exception as error:
             flash(str(error))
-            return render_template("new_reference.html")
-
-    return render_template("new_reference.html")
+            return render_template("new_reference.html", tags=tags)
+    return render_template("new_reference.html", tags=tags)
 
 @app.route("/sources/edit/<string:source_key>")
 def edit_source(source_key):
     source = get_info(source_key)
-    return render_template("edit_reference.html", key=source_key, source=source)
+    if source is None:
+        flash("Viitettä ei löytynyt")
+        return redirect("/")
+    sdict = _row_to_dict(source)
+    tags = get_tags()
+    tags_map = find_tags([sdict])
+    selected = []
+    if "id" in sdict and sdict["id"] is not None and sdict["id"] in tags_map:
+        selected = tags_map.get(sdict["id"], [])
+    elif "key" in sdict and sdict.get("key") in tags_map:
+        selected = tags_map.get(sdict.get("key"), [])
+    return render_template("edit_reference.html", key=source_key, source=sdict, tags=tags, selected_tags=selected)
 
 @app.route("/sources/update_item", methods=["POST"])
 def update_source():
@@ -67,12 +119,47 @@ def update_source():
     try:
         validate_book(source_key, ref_type, author, title, year, journal, publisher)
         edit_book(source_key, [source_key, ref_type, author, title, year, journal, publisher, doi])
+
+        row = db.session.execute(text("SELECT id FROM books WHERE key = :key LIMIT 1"), {"key": source_key}).fetchone()
+        book_id = row[0] if row else None
+        db.session.execute(text("DELETE FROM book_tags WHERE book_id = :b"), {"b": book_id})
+        selected_tags = request.form.getlist('tags')
+        new_tags_raw = request.form.get('new_tags', '')
+        new_tags = [p.strip() for p in re.split(r'[,\\n]+', new_tags_raw) if p.strip()]
+        all_tag_names = []
+        for tag in selected_tags + new_tags:
+            if tag and tag not in all_tag_names:
+                all_tag_names.append(tag)
+        for tag_name in all_tag_names:
+            try:
+                tag_id = create_tag(tag_name)
+                attach_tag(book_id, tag_id)
+            except UserInputError as error:
+                flash(str(error))
+                source = get_info(source_key)
+                sdict = _row_to_dict(source)
+                tags = get_tags()
+                tags_map = find_tags([sdict])
+                selected = []
+                if "id" in sdict and sdict["id"] is not None and sdict["id"] in tags_map:
+                    selected = tags_map.get(sdict["id"], [])
+                elif "key" in sdict and sdict.get("key") in tags_map:
+                    selected = tags_map.get(sdict.get("key"), [])
+                return render_template("edit_reference.html", key=source_key, source=source, tags=tags, selected_tags=selected)
+        db.session.commit()
         return redirect("/")
     except Exception as error:
         flash(str(error))
-        print(source_key, ref_type, author, title, year, journal, publisher, doi)
         source = get_info(source_key)
-        return render_template("edit_reference.html", key=source_key, source=source)
+        sdict = _row_to_dict(source)
+        tags = get_tags()
+        tags_map = find_tags([sdict])
+        selected = []
+        if "id" in sdict and sdict["id"] is not None and sdict["id"] in tags_map:
+            selected = tags_map.get(sdict["id"], [])
+        elif "key" in sdict and sdict.get("key") in tags_map:
+            selected = tags_map.get(sdict.get("key"), [])
+        return render_template("edit_reference.html", key=source_key, source=source, tags=tags, selected_tags=selected)
 
 
 @app.route("/sources/delete/<string:source_key>", methods=["POST"])
@@ -94,6 +181,15 @@ def find_source():
 
     results = find_books(query, ref_type=ref_type or None, doi_query=doi_query or None)
     print(results)
+
+    tags_map = find_tags(results)
+    for s in results:
+        s_tags = []
+        if "id" in s and s["id"] is not None and s["id"] in tags_map:
+            s_tags = tags_map.get(s["id"], [])
+        elif "key" in s and s["key"] in tags_map:
+            s_tags = tags_map.get(s["key"], [])
+        s["tags"] = s_tags
 
     return render_template(
         "index.html",

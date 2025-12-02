@@ -68,9 +68,10 @@ def create_book(key, ref_type, author, title, year, journal, publisher, doi):
     bibtex = build_bibtex(key, ref_type, author, title, year, journal, publisher)
     sql = text(
         "INSERT INTO books (key, ref_type, author, title, year, journal, publisher, doi, bibtex) "
-        "VALUES (:key, :ref_type, :author, :title, :year, :journal, :publisher, :doi, :bibtex)"
+        "VALUES (:key, :ref_type, :author, :title, :year, :journal, :publisher, :doi, :bibtex) "
+        "RETURNING id"
     )
-    db.session.execute(sql, {
+    result = db.session.execute(sql, {
         "key": key,
         "ref_type": ref_type,
         "author": author,
@@ -81,7 +82,17 @@ def create_book(key, ref_type, author, title, year, journal, publisher, doi):
         "doi": doi,
         "bibtex": bibtex
     })
-    db.session.commit()
+    row = result.fetchone()
+    try:
+        result.close()
+    except Exception:
+        pass
+    if row:
+        db.session.commit()
+        return row[0]
+    else:
+        db.session.rollback()
+        return None
 
 def edit_book(source_key, content):
     fields = ["key", "ref_type", "author", "title", "year", "journal", "publisher", "doi"]

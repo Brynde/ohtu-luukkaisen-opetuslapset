@@ -77,6 +77,16 @@
             </p>
             {% endif %}
 
+            <p><strong>Tagit:</strong>
+                {% if source.tags %}
+                    {% for tag in source.tags %}
+                        <span class="tag">{{ tag }}</span>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <em>ei tageja</em>
+                {% endif %}
+            </p>
+
             <br>
             <h3>BibTeX koodi:</h3>
             <div class="bib-controls">

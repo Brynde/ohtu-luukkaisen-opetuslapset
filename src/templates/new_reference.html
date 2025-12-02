@@ -50,11 +50,44 @@
     <input type="text" id="publisher" name="publisher"
            value="{{ request.form.get('publisher', '') }}"><br><br>
 
+    <label for="tags">Tagit:</label><br>
+    <div class="tags-dropdown">
+    <button type="button" id="tags-toggle">Valitse tagit ▾</button>
+    <div id="tags-panel" class="hidden panel">
+        <div class="tags-list" style="max-height:200px;overflow:auto;">
+        {% for t in tags|default([]) %}
+            <label style="display:block;padding:2px">
+            <input type="checkbox" name="tags" value="{{ t }}"
+                    {% if t in request.form.getlist('tags') %}checked{% endif %}>
+            {{ t }}
+            </label>
+        {% endfor %}
+        </div>
+        <hr>
+        <label for="new_tags">Lisää uusia tageja (erota pilkulla tai rivinvaihdolla):</label><br>
+        <textarea id="new_tags" name="new_tags" rows="3" style="width:100%">{{ request.form.get('new_tags','') }}</textarea>
+        <div style="margin-top:6px;font-size:0.9em;color:#555">Valitse olemassa olevat tai lisää uusia. Uudet tagit luodaan lomakkeen lähetyksessä.</div>
+        </div>
+    </div>
+
     <label for="doi">DOI:</label><br>
     <input type="text" id="doi" name="doi"
            value="{{ request.form.get('doi', '') }}"><br><br>
 
     <button type="submit">Tallenna viite</button>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const toggle = document.getElementById('tags-toggle');
+  const panel = document.getElementById('tags-panel');
+  if (!toggle || !panel) return;
+  toggle.addEventListener('click', () => panel.classList.toggle('hidden'));
+  // close panel on outside click
+  document.addEventListener('click', (e) => {
+    if (!panel.contains(e.target) && e.target !== toggle) panel.classList.add('hidden');
+  });
+});
+</script>
 
 {% endblock %}
