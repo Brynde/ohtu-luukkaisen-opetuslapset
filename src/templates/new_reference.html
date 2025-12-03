@@ -50,9 +50,9 @@
     <input type="text" id="publisher" name="publisher"
            value="{{ request.form.get('publisher', '') }}"><br><br>
 
-    <label for="tags">Tagit:</label><br>
+    <label for="tags">Tunnisteet:</label><br>
     <div class="tags-dropdown">
-    <button type="button" id="tags-toggle">Valitse tagit ▾</button>
+    <button type="button" id="tags-toggle">Valitse tunnisteet ▾</button>
     <div id="tags-panel" class="hidden panel">
         <div class="tags-list" style="max-height:200px;overflow:auto;">
         {% for t in tags|default([]) %}
@@ -64,9 +64,9 @@
         {% endfor %}
         </div>
         <hr>
-        <label for="new_tags">Lisää uusia tageja (erota pilkulla tai rivinvaihdolla):</label><br>
+        <label for="new_tags">Lisää uusia tunnisteita (erota pilkulla tai rivinvaihdolla):</label><br>
         <textarea id="new_tags" name="new_tags" rows="3" style="width:100%">{{ request.form.get('new_tags','') }}</textarea>
-        <div style="margin-top:6px;font-size:0.9em;color:#555">Valitse olemassa olevat tai lisää uusia. Uudet tagit luodaan lomakkeen lähetyksessä.</div>
+        <div style="margin-top:6px;font-size:0.9em;color:#555">Valitse olemassa olevat tai lisää uusia. Uudet tunnisteet luodaan lomakkeen lähetyksessä.</div>
         </div>
     </div>
 

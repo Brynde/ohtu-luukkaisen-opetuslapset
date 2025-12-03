@@ -23,6 +23,22 @@
                     <option value="article" {% if ref_type == 'article' %}selected{% endif %}>artikkeli</option>
                 </select>
             </p>
+
+            <p>
+                <label for="tag">Suodata tunnisteen mukaan:</label><br>
+                <select id="tag" name="tag" onchange="this.form.submit()">
+                    <option value="">Kaikki</option>
+                    {% for t in tags|default([]) %}
+                        <option value="{{ t }}" {% if selected_tag == t %}selected{% endif %}>{{ t }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <p>
+                <label for="doi_query">Hae DOI-tunnisteella:</label><br>
+                <input type="text" id="doi_query" name="doi_query" value="{{ doi_query|default('') }}">
+            </p>
+
             <input type="submit" value="Hae">
         </form><br><br>
 
@@ -62,13 +78,13 @@
                     </p>
                     {% endif %}
 
-                    <p><strong>Tagit:</strong>
+                    <p><strong>Tunnisteet:</strong>
                         {% if source.tags %}
                             {% for tag in source.tags %}
                                 <span class="tag">{{ tag }}</span>{% if not loop.last %}, {% endif %}
                             {% endfor %}
                         {% else %}
-                            <em>ei tageja</em>
+                            <em>ei tunnisteita</em>
                         {% endif %}
                     </p>
 

@@ -48,6 +48,18 @@
         <input type="submit" value="Lajittele">
     </form>
 
+    <form action="/" method="get" style="display:inline-block;">
+        <label for="tag">Suodata tunnisteen mukaan:</label><br>
+        <select id="tag" name="tag" onchange="this.form.submit()">
+            <option value="">Kaikki</option>
+            {% for t in tags|default([]) %}
+                <option value="{{ t }}" {% if selected_tag == t %}selected{% endif %}>{{ t }}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="doi_query" value="{{ doi_query|default('') }}">
+    </form>
+    <br><br>
+
 {% if sources %}
     {% for source in sources %}
         <div class="source-card">
@@ -81,13 +93,13 @@
             </p>
             {% endif %}
 
-            <p><strong>Tagit:</strong>
+            <p><strong>Tunnisteet:</strong>
                 {% if source.tags %}
                     {% for tag in source.tags %}
                         <span class="tag">{{ tag }}</span>{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 {% else %}
-                    <em>ei tageja</em>
+                    <em>ei tunnisteita</em>
                 {% endif %}
             </p>
 

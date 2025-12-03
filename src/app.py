@@ -5,11 +5,10 @@ from config import app, test_env, db
 from util import validate_book, UserInputError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
-from repositories.tag_repository import get_tags, create_tag, attach_tag, find_tags
+from repositories.tag_repository import get_tags, find_tags
 import re
 
 def _row_to_dict(row):
-    # pitää tehdä että saa tagit lisättyä myös
     if isinstance(row, dict):
         return row
     try:
@@ -23,24 +22,31 @@ def _row_to_dict(row):
 @app.route("/")
 def index():
     doi_query = request.args.get("doi_query", "").strip()
+    selected_tag = request.args.get("tag", "").strip() or None
+
     if doi_query:
-        sources = find_books("", doi_query=doi_query)
+        raw_sources = find_books("", doi_query=doi_query)
     else:
         criteria = request.args.get("sort")
-        print(criteria)
-        sources = get_books(criteria)
+        raw_sources = get_books(criteria)
 
-    dict_sources = [_row_to_dict(s) for s in sources]
-    tags_map = find_tags(dict_sources)
-    for s in dict_sources:
+    sources = [_row_to_dict(s) for s in raw_sources]
+
+    tags_map = find_tags(sources)
+    for s in sources:
         s_tags = []
         if "id" in s and s["id"] is not None and s["id"] in tags_map:
             s_tags = tags_map.get(s["id"], [])
-        elif "key" in s and s["key"] in tags_map:
-            s_tags = tags_map.get(s["key"], [])
+        elif "key" in s and s.get("key") in tags_map:
+            s_tags = tags_map.get(s.get("key"), [])
         s["tags"] = s_tags
 
-    return render_template("index.html", sources=dict_sources, doi_query=doi_query)
+    if selected_tag:
+        sources = [s for s in sources if selected_tag in s.get("tags", [])]
+
+    all_tags = get_tags()
+
+    return render_template("index.html", sources=sources, doi_query=doi_query, tags=all_tags, selected_tag=selected_tag)
 
 
 @app.route("/sources")
@@ -176,27 +182,37 @@ def find_source():
     query = request.args.get("query", "")
     ref_type = request.args.get("ref_type", "")
     doi_query = request.args.get("doi_query", "")
+    selected_tag = request.args.get("tag", "").strip() or None
 
-    print("find_source args:", dict(request.args))
+    # get raw results and normalize to dicts so we can attach tags
+    raw_results = find_books(query, ref_type=ref_type or None, doi_query=doi_query or None)
+    results = [_row_to_dict(r) for r in raw_results]
 
-    results = find_books(query, ref_type=ref_type or None, doi_query=doi_query or None)
-    print(results)
-
+    # attach tags to each source
     tags_map = find_tags(results)
     for s in results:
         s_tags = []
         if "id" in s and s["id"] is not None and s["id"] in tags_map:
             s_tags = tags_map.get(s["id"], [])
-        elif "key" in s and s["key"] in tags_map:
-            s_tags = tags_map.get(s["key"], [])
+        elif "key" in s and s.get("key") in tags_map:
+            s_tags = tags_map.get(s.get("key"), [])
         s["tags"] = s_tags
 
+    # filter by tag if requested
+    if selected_tag:
+        results = [s for s in results if selected_tag in s.get("tags", [])]
+
+    # pass available tags for the UI
+    all_tags = get_tags()
+
     return render_template(
-        "index.html",
+        "find_reference.html",
         query=query,
         ref_type=ref_type,
         doi_query=doi_query,
         sources=results,
+        tags=all_tags,
+        selected_tag=selected_tag,
     )
 
 @app.route("/reset_db")
