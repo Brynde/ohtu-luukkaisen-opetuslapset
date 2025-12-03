@@ -8,7 +8,9 @@ CREATE TABLE books (
     journal TEXT,
     publisher TEXT,
     doi TEXT,
-    bibtex TEXT
+    bibtex TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE tags (

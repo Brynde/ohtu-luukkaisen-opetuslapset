@@ -24,7 +24,7 @@ def get_books(criteria):
     if criteria == None:
         criteria = "title DESC"
     
-    types = ["title DESC", "title", "year DESC", "year", "author"]
+    types = ["title DESC", "title", "year DESC", "year", "author", "created_at DESC", "created_at", "updated_at DESC", "updated_at"]
     if criteria not in types:
         raise ValueError("Lajittelutyyppiä ei löydy")
 
@@ -35,7 +35,7 @@ def get_books(criteria):
     return books
 
 def get_info(source_key):
-    sql = text("SELECT key, ref_type, author, title, year, journal, publisher, doi, bibtex FROM books WHERE key = :key")
+    sql = text("SELECT key, ref_type, author, title, year, journal, publisher, doi, bibtex, created_at, updated_at FROM books WHERE key = :key")
     result = db.session.execute(sql, {"key": source_key})
     book_info = result.fetchone()
     if book_info is None:
@@ -59,7 +59,7 @@ def update_bibtex(key):
         return None
 
     bib = build_bibtex(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
-    update_sql = text("UPDATE books SET bibtex = :bib WHERE key = :key")
+    update_sql = text("UPDATE books SET bibtex = :bib, updated_at = CURRENT_TIMESTAMP WHERE key = :key")
     db.session.execute(update_sql, {"bib": bib, "key": key})
     db.session.commit()
     return bib
@@ -141,6 +141,7 @@ def edit_book(source_key, content):
     if not set_clauses:
         return False
 
+    set_clauses.append("updated_at = CURRENT_TIMESTAMP")
     params["source_key"] = source_key
     sql = text(f"UPDATE books SET {', '.join(set_clauses)} WHERE key = :source_key")
     db.session.execute(sql, params)
