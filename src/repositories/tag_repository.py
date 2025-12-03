@@ -2,6 +2,49 @@ from sqlalchemy import text
 from config import db
 from util import UserInputError
 
+def cleanup_tags_for_book(book_id):
+    """
+    Remove book->tag links for the given book_id and delete any tags that
+    become orphaned (no remaining book_tags rows). Does NOT commit;
+    caller should commit once after calling.
+    """
+    if book_id is None:
+        return False
+
+    res = db.session.execute(text(
+        "SELECT tag_id FROM book_tags WHERE book_id = :b"
+    ), {"b": book_id})
+    rows = res.fetchall()
+    try:
+        res.close()
+    except Exception:
+        pass
+    tag_ids = [r[0] for r in rows]
+
+    if not tag_ids:
+        return True
+
+    db.session.execute(text(
+        "DELETE FROM book_tags WHERE book_id = :b"
+    ), {"b": book_id})
+    db.session.flush()
+
+    for tid in set(tag_ids):
+        res2 = db.session.execute(text(
+            "SELECT 1 FROM book_tags WHERE tag_id = :t LIMIT 1"
+        ), {"t": tid})
+        still = res2.fetchone()
+        try:
+            res2.close()
+        except Exception:
+            pass
+        if not still:
+            db.session.execute(text(
+                "DELETE FROM tags WHERE id = :t"
+            ), {"t": tid})
+    db.session.flush()
+    return True
+
 def create_tag(name):
     name = (name or "").strip()
     if not name:

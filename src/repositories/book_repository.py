@@ -1,5 +1,6 @@
 from sqlalchemy import text
 from config import db
+from repositories.tag_repository import cleanup_tags_for_book
 
 def build_bibtex(key, ref_type, author, title, year, journal, publisher):
     ref_type = (ref_type or "").strip()
@@ -150,6 +151,18 @@ def edit_book(source_key, content):
     return True
 
 def delete_book(source_key):
+    # obtaining book id first so tags can be deleted if necessary
+    row = db.session.execute(text(
+        "SELECT id FROM books WHERE key = :key"
+    ), {"key": source_key}).fetchone()
+    try:
+        pass
+    except Exception:
+        pass
+    if not row:
+        return False
+    book_id = row[0]
+    cleanup_tags_for_book(book_id)
     if get_info(source_key) is None:
         return False
     sql = text("DELETE FROM books WHERE key = :key")
