@@ -22,7 +22,7 @@ def build_bibtex(key, ref_type, author, title, year, journal, publisher):
 
 def get_books(criteria):
     if criteria == None:
-        criteria = "year"
+        criteria = "title DESC"
     
     types = ["title DESC", "title", "year DESC", "year", "author"]
     if criteria not in types:

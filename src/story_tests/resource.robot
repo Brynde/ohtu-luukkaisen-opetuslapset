@@ -26,6 +26,7 @@ Open And Configure Browser
         Set Selenium Speed  ${DELAY}
     END
     Open Browser  browser=${BROWSER}  options=${options}
+    
 
 Reset Sources
     Go To  ${RESET_URL}
