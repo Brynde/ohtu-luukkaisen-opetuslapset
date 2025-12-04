@@ -1,5 +1,4 @@
 from pathlib import Path
-from sqlalchemy import text
 from config import app, db
 
 def reset_db():

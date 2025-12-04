@@ -8,7 +8,7 @@ def build_bibtex(key, ref_type, author, title, year, journal, publisher):
     parts = []
     if author:
         parts.append(f"  author = {{{author}}}")
-    if year is not None and year != "":
+    if year:
         parts.append(f"  year = {{{year}}}")
     if title:
         parts.append(f"  title = {{{title}}}")
@@ -22,9 +22,9 @@ def build_bibtex(key, ref_type, author, title, year, journal, publisher):
     return bib
 
 def get_books(criteria):
-    if criteria == None:
+    if not criteria:
         criteria = "title DESC"
-    
+
     types = ["title DESC", "title", "year DESC", "year", "author", "created_at DESC", "created_at", "updated_at DESC", "updated_at"]
     if criteria not in types:
         raise ValueError("Lajittelutyyppiä ei löydy")
@@ -117,7 +117,7 @@ def edit_book(source_key, content):
             return None
         if isinstance(value, str):
             v = value.strip()
-            if v == "":
+            if not v:
                 return None
             if field == "year":
                 try:
@@ -172,7 +172,7 @@ def delete_book(source_key):
 
 def find_books(query, ref_type=None, doi_query=None):
     query = (query or "").strip()
-    q = "%" if query == "" else f"%{query}%"
+    q = "%" if not query else f"%{query}%"
 
     sql = (
         "SELECT key, ref_type, author, title, year, journal, publisher, doi, bibtex "

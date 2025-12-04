@@ -3,4 +3,3 @@ class Book:
         self.author = author
         self.title = title
         self.year = year
-    

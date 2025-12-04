@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
 from os import getenv
+from dotenv import load_dotenv
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
 
 load_dotenv()
 

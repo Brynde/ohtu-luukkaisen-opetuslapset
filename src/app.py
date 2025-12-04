@@ -1,12 +1,13 @@
+import re
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import text
 from flask import redirect, render_template, request, jsonify, flash
 from db_helper import reset_db
 from repositories.book_repository import get_books, create_book, get_info, edit_book, delete_book, find_books
-from config import app, test_env, db
+from config import app, db
 from util import validate_book, UserInputError
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import text
 from repositories.tag_repository import get_tags, find_tags, create_tag, attach_tag
-import re
+
 
 def _row_to_dict(row):
     if isinstance(row, dict):
@@ -66,7 +67,7 @@ def new_source():
         journal = request.form.get("journal")
         publisher = request.form.get("publisher")
         doi = request.form.get("doi")
-    
+
         try:
             validate_book(key, ref_type, author, title, year, journal, publisher, doi)
             book_id = create_book(key, ref_type, author, title, year, journal, publisher, doi)
@@ -235,5 +236,5 @@ def reset_database():
     attach_tag(book_id3, tag_id2)
     attach_tag(book_id4, tag_id3)
     db.session.commit()
-    
+
     return jsonify({"message": "db reset"})

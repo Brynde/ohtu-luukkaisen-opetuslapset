@@ -17,7 +17,7 @@ def cleanup_tags_for_book(book_id):
     rows = res.fetchall()
     try:
         res.close()
-    except Exception:
+    except:
         pass
     tag_ids = [r[0] for r in rows]
 
@@ -36,7 +36,7 @@ def cleanup_tags_for_book(book_id):
         still = res2.fetchone()
         try:
             res2.close()
-        except Exception:
+        except:
             pass
         if not still:
             db.session.execute(text(
@@ -72,7 +72,7 @@ def attach_tag(book_id, tag_id):
 
 def get_tags():
     result = db.session.execute(
-        text(f"SELECT name FROM tags ORDER BY name")
+        text("SELECT name FROM tags ORDER BY name")
     )
     rows = result.fetchall()
     tags = [r[0] for r in rows]
@@ -80,7 +80,7 @@ def get_tags():
 
 def get_books_with_tag(tag_id):
     result = db.session.execute(
-        text(f"SELECT book_id FROM book_tags WHERE tag_id like :tag_id"), tag_id
+        text("SELECT book_id FROM book_tags WHERE tag_id like :tag_id"), tag_id
     )
     books = result.fetchall()
     return books
@@ -89,7 +89,7 @@ def validate_tag(tag):
     name = (tag or "").strip()
     if not name:
         raise UserInputError("Tunniste ei voi olla tyhjä")
-    
+
     if len(name) >= 25:
         raise UserInputError("Tunnisteen pituus ei saa ylittää yli 25 merkkiä")
 
@@ -113,7 +113,7 @@ def find_tags(sources):
         if "id" in s and s["id"] is not None:
             try:
                 ids.append(int(s["id"]))
-            except Exception:
+            except:
                 pass
         if "key" in s and s["key"]:
             keys.append(str(s["key"]))
@@ -153,7 +153,7 @@ def find_tags(sources):
     rows = res.fetchall()
     try:
         res.close()
-    except Exception:
+    except:
         pass
 
     mapping = {}
