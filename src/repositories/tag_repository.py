@@ -67,7 +67,7 @@ def get_tag_by_name(name):
     return {"id": row[0], "name": row[1]}
 
 def attach_tag(book_id, tag_id):
-    sql = text("INSERT OR IGNORE INTO book_tags (book_id, tag_id) ""VALUES (:book_id, :tag_id)")
+    sql = text("INSERT OR IGNORE INTO book_tags (book_id, tag_id) VALUES (:book_id, :tag_id)")
     db.session.execute(sql, {"book_id": book_id, "tag_id": tag_id})
 
 def get_tags():

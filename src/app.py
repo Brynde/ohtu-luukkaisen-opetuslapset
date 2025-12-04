@@ -5,7 +5,7 @@ from config import app, test_env, db
 from util import validate_book, UserInputError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
-from repositories.tag_repository import get_tags, find_tags
+from repositories.tag_repository import get_tags, find_tags, create_tag, attach_tag
 import re
 
 def _row_to_dict(row):
@@ -222,9 +222,18 @@ def reset_database():
     reset_db()
 
     # create_book(key, ref_type, author, title, year, journal, publisher)
-    create_book("LuukProjekti", "article", "Luukkaisen opetuslapset", "Miten saada miniprojektista täydet pisteet", 2025, "Helsingin Sanomat", "", "")
-    create_book("EricCaterpillar", "book", "Eric Carle", "The Very Hungry Caterpillar", 1969, "", "World Publishing Company", "")
-    create_book("ShakespRomeo", "book", "William Shakespeare", "Romeo and Juliet", 1597, "", "", "")
-    create_book("ProdLosses", "inproceedings", "H. Gomez, K. Silva", "Productivity Losses Associated with Saying ‘Just One More Episode’", 2020, "Proceedings of the Global Conference on Questionable Life Choices", "", "")
-
+    book_id = create_book("LuukProjekti", "article", "Luukkaisen opetuslapset", "Miten saada miniprojektista täydet pisteet", 2025, "Helsingin Sanomat", "", "13371337")
+    book_id2 = create_book("EricCaterpillar", "book", "Eric Carle", "The Very Hungry Caterpillar", 1969, "", "World Publishing Company", "1010104843A")
+    book_id3 = create_book("ShakespRomeo", "book", "William Shakespeare", "Romeo and Juliet", 1597, "", "", "00010001")
+    book_id4 = create_book("ProdLosses", "inproceedings", "H. Gomez, K. Silva", "Productivity Losses Associated with Saying ‘Just One More Episode’", 2020, "Proceedings of the Global Conference on Questionable Life Choices", "", "")
+    tag_id = create_tag("tärkeä")
+    tag_id2 = create_tag("fiktio")
+    tag_id3 = create_tag("2000-luvulla kirjoitettu")
+    attach_tag(book_id, tag_id)
+    attach_tag(book_id, tag_id3)
+    attach_tag(book_id2, tag_id2)
+    attach_tag(book_id3, tag_id2)
+    attach_tag(book_id4, tag_id3)
+    db.session.commit()
+    
     return jsonify({"message": "db reset"})
