@@ -15,10 +15,35 @@
     .hidden { display: none; }
     .tags-dropdown { position: relative; display:block; }
     .tags-dropdown .panel { position: absolute; left:0; z-index: 50; background:#fff; border:1px solid #ccc; padding:8px; width:320px; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+
+    h1.site-header {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 1000;
+      margin: 0;
+      background: rgba(82, 200, 255, 0.9);
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    img.puffle-gif {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 1000;
+      width: 200px; /* adjust size as needed */
+      height: auto;
+      pointer-events: none; /* so it doesn't block clicks */
+      background: transparent;
+    }
+
+    body { padding-top: 70px; }
   </style>
   <body>
+    <h1 class="site-header">{% block header %}<img src="{{ url_for('static', filename='SOURCE-PENGUIN-V1.png') }}" alt="Source Penguin">{% endblock %}</h1>
 
-    <h1>{% block header %}{% endblock %}</h1>
+    <img class="puffle-gif" src="{{ url_for('static', filename='spinning-puffles.gif') }}" alt="Puffle GIF">
 
     {% block messages %}
       {% with messages = get_flashed_messages() %}
@@ -29,6 +54,11 @@
         {% endif %}
       {% endwith %}
     {% endblock %}
+
+    {# page-specific header placed under the site header; child templates can override #}
+    <div class="page-header-wrapper">
+      {% block page_header %}{% endblock %}
+    </div>
 
     {% block body %}{% endblock %}
   </body>

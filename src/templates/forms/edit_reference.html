@@ -1,8 +1,8 @@
 {% extends "forms/base.html" %}
 
-{% block title %} Muokkaa viitettä {{ source.key }}{% endblock %}
-
-{% block header %} Muokkaa viitettä {{ source.key }}{% endblock %}
+{% block page_header %}
+  <h2 class="page-title">Muokkaa viitettä {{ source.key }}</h2>
+{% endblock %}
 
 {% block messages %}{{ super() }}{% endblock %}
 
@@ -71,7 +71,7 @@
 </form>
 
 <p>
-    <a href="/sources">Takaisin viitelistaan</a>
+    <a class="add-button" href="/">Palaa etusivulle</a>
 </p>
 
 <script>

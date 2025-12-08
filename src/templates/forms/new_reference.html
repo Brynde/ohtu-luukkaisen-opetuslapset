@@ -2,7 +2,9 @@
 
 {% block title %}Lisää uusi viite{% endblock %}
 
-{% block header %}Lisää uusi viite{% endblock %}
+{% block page_header %}
+  <h2 class="page-title">Lisää uusi viite</h2>
+{% endblock %}
 
 {% block messages %}{{ super () }}{% endblock %}
 
@@ -77,6 +79,10 @@
 
     <button type="submit">Tallenna viite</button>
 </form>
+
+<p>
+    <a class="add-button" href="/">Palaa etusivulle</a>
+</p>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
