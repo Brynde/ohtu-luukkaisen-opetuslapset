@@ -3,10 +3,10 @@ body {
     margin: 40px;
     background: radial-gradient(
         circle at center,
-        #bfe6ff 0%,
-        #9dd6ff 40%,
-        #0074c2 75%,
-        #003366 100%
+        #58a4d6 0%,
+        #55a5da 40%,
+        #2693cb 75%,
+        #0175b0 100%
     );
     background-attachment: fixed;
     color: #003366;
@@ -14,7 +14,7 @@ body {
 
 h1 {
     color: #003366;
-    text-shadow: 2px 2px 0px white;
+    text-shadow: 2px 2px white, 2px 2px white;
 }
 
 .add-button {
@@ -35,21 +35,81 @@ h1 {
     transform: translateY(-2px);
 }
 
-.source-card {
-    background: #ffffffdd;
+.misc-button, .copy-button, .doi-button, .delete-btn, .edit-btn{
+    display: inline-block;
+    padding: 10px 18px;
+    background-color: #027cc8;
+    border-radius: 15px;
+    text-decoration: none;
+    color: black;
+    border-top: 3px solid #005097;
+    border-left: 3px solid #005097;
+    border-bottom: 3px solid #01518e;
+    border-right: 3px solid #01518e;
+    box-shadow: 0 4px 0 #003366;
+    transition: transform 0.1s;
+}
+
+.misc-button:hover, .copy-button:hover, .doi-button:hover, .edit-btn:hover{
+    background-color: #00b3e8;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    color: #ff4444;
+    font-weight: bolder;
+}
+
+.delete-btn:hover {
+    transform: translateY(-2px);
+    background-color: #ff4444;
+    color: white;
+    border: 3px solid #cc0000;
+}
+ 
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, 39em);
+    justify-content: center;
+}
+
+.forms{
+    display: grid;
+    justify-content: center;
+}
+
+.source-card{
+    background: #0280cd;
     backdrop-filter: blur(4px);
     padding: 18px;
+    width: 35em;
     margin-bottom: 20px;
-    border-radius: 12px;
-    border: 3px solid #99d9ff;
-    box-shadow: 0 4px 0 #66b8e6;
+    border-radius: 22px;
+    border-top: 3px solid #00ccff;
+    border-left: 3px solid #00ccff;
+    border-bottom: 3px solid #00529b;
+    border-right: 3px solid #00529b;
+    box-shadow: 0 4px 0 #003366;
 }
 
 .source-card h3 {
     margin: 0 0 8px;
-    color: #003366;
+    color: black;
     font-weight: bold;
-    text-shadow: 1px 1px 0 white;
+}
+
+.source-card p{
+    color: black;
+}
+
+.code {
+    background-color: #00529b;
+    padding: 10px 10px 10px 30px;
+    border-radius: 19px;
+}
+
+.code p{
+    color: white;
 }
 
 .buttons {
@@ -58,40 +118,18 @@ h1 {
     gap: 10px;
 }
 
-.edit-btn, .delete-btn {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 3px 0 rgba(0,0,0,0.25);
-    transition: transform 0.1s;
-}
-
-.edit-btn {
-    background-color: #0099ff;
+.text-field, text{
+    background-color: #003366;
+    border-radius: 1000px;
+    padding: 1em;
     color: white;
-    border: 3px solid #006bb3;
+    border-top: 3px solid #00529b;
+    border-left: 3px solid #00529b;
+    border-bottom: 3px solid #01c0f6;
+    border-right: 3px solid #01c0f6;
+    box-shadow: 0 4px 0 #003366;
 }
 
-a.edit-btn {
-    text-decoration: none;
-    color: white;
-}
-
-.edit-btn:hover {
-    transform: translateY(-2px);
-}
-
-.delete-btn {
-    background-color: #ff4444;
-    color: white;
-    border: 3px solid #cc0000;
-}
-
-.delete-btn:hover {
-    transform: translateY(-2px);
-}
 
 .code-box {
     background-color: #e8f7ff;
@@ -107,3 +145,47 @@ a.edit-btn {
     color: #ff3300;
     font-weight: bold;
 }
+
+.hidden { 
+    display: none; 
+}
+    
+.tags-dropdown {
+    position: relative; 
+    display:block; 
+}
+    
+.tags-dropdown .panel { 
+    position: absolute; 
+    left:0; 
+    z-index: 50; 
+    background:#fff; 
+    border:1px solid #ccc; 
+    padding:8px; 
+    width:320px; 
+    box-shadow:0 2px 8px rgba(0,0,0,0.1); 
+}
+
+h1.site-header {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 1000;
+      margin: 0;
+      background: rgba(82, 200, 255, 0.9);
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    img.puffle-gif {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 1000;
+      width: 200px; /* adjust size as needed */
+      height: auto;
+      pointer-events: none; /* so it doesn't block clicks */
+      background: transparent;
+    }
+
+    body { padding-top: 70px; }

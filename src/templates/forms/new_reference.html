@@ -3,22 +3,26 @@
 {% block title %}Lisää uusi viite{% endblock %}
 
 {% block page_header %}
+<div class="forms">
   <h2 class="page-title">Lisää uusi viite</h2>
+</div>
 {% endblock %}
 
 {% block messages %}{{ super () }}{% endblock %}
 
 {% block body %}
 
+<div class="forms">
+<div class="source-card">
 <form method="POST">
 
-    <p>* merkityt kentät ovat pakollisia </p>
+    <p class="required">* merkityt kentät ovat pakollisia </p>
     <label for="key">Viiteavain (key): <span class="required">*</span></label><br>
-    <input type="text" id="key" name="key" required
+    <input type="text" class="text-field" id="key" name="key" required
             value="{{ request.form.get('key', '') }}"><br><br>
 
     <label for="ref_type">Tyyppi: <span class="required">*</span></label><br>
-    <select id="ref_type" name="ref_type" required>
+    <select id="ref_type" class="text-field" name="ref_type" required>
         <option value="article"
             {% if request.form.get('ref_type', 'article') == 'article' %}selected{% endif %}>
             artikkeli
@@ -34,28 +38,28 @@
     </select><br><br>
 
     <label for="author">Tekijä(t): <span class="required">*</span></label><br>
-    <input type="text" id="author" name="author" required
+    <input type="text" class="text-field" id="author" name="author" required
             value="{{ request.form.get('author', '') }}"><br><br>
 
     <label for="title">Otsikko (title): <span class="required">*</span></label><br>
-    <input type="text" id="title" name="title" required
+    <input type="text" class="text-field" id="title" name="title" required
             value="{{ request.form.get('title', '') }}"><br><br>
 
     <label for="year">Vuosi (year): <span class="required">*</span></label><br>
-    <input type="number" id="year" name="year" required
+    <input type="number" class="text-field" id="year" name="year" required
             value="{{ request.form.get('year', '') }}"><br><br>
 
     <label for="journal">Lehti / Konferenssi (journal/booktitle):</label><br>
-    <input type="text" id="journal" name="journal"
+    <input type="text" class="text-field" id="journal" name="journal"
             value="{{ request.form.get('journal', '') }}"><br><br>
 
     <label for="publisher">Kustantaja (publisher):</label><br>
-    <input type="text" id="publisher" name="publisher"
+    <input type="text" class="text-field" id="publisher" name="publisher"
            value="{{ request.form.get('publisher', '') }}"><br><br>
 
     <label for="tags">Tunnisteet:</label><br>
     <div class="tags-dropdown">
-    <button type="button" id="tags-toggle">Valitse tunnisteet ▾</button>
+    <button type="button" class="text-field" id="tags-toggle">Valitse tunnisteet ▾</button>
     <div id="tags-panel" class="hidden panel">
         <div class="tags-list" style="max-height:200px;overflow:auto;">
         {% for t in tags|default([]) %}
@@ -72,18 +76,20 @@
         <div style="margin-top:6px;font-size:0.9em;color:#555">Valitse olemassa olevat tai lisää uusia. Uudet tunnisteet luodaan lomakkeen lähetyksessä.</div>
         </div>
     </div>
+    <br>
 
     <label for="doi">DOI:</label><br>
-    <input type="text" id="doi" name="doi"
+    <input type="text" class="text-field" id="doi" name="doi"
            value="{{ request.form.get('doi', '') }}"><br><br>
 
-    <button type="submit">Tallenna viite</button>
+    <button type="submit" class="misc-button">Tallenna viite</button>
 </form>
+</div>
 
 <p>
     <a class="add-button" href="/">Palaa etusivulle</a>
 </p>
-
+</div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const toggle = document.getElementById('tags-toggle');

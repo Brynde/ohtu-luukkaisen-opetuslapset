@@ -6,10 +6,10 @@
 
 {% block options %}
 {{ super() }}
-    <a class="add-button" href="/">Palaa etusivulle</a>
+    <a class="misc-button" href="/">Palaa etusivulle</a>
 {% endblock %}
-
-    <h2>Hakutulokset</h2>
+    <div class="forms"><h2>Hakutulokset</h2></div>
+    
     {% if sources %}
       {% block source_cards %}{{ super () }}{% endblock %}
     {% else %}
