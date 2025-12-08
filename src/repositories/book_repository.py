@@ -50,9 +50,10 @@ def get_info(source_key):
         "journal": book_info[5],
         "publisher": book_info[6],
         "doi": book_info[7],
-        "bibtex": book_info[8]
+        "bibtex": book_info[8],
+        "created_at": book_info[9],
+        "updated_at": book_info[10],
     }
-
 def update_bibtex(key):
     sql = text("SELECT key, ref_type, author, title, year, journal, publisher FROM books WHERE key = :key")
     row = db.session.execute(sql, {"key": key}).fetchone()
@@ -175,13 +176,15 @@ def find_books(query, ref_type=None, doi_query=None):
     q = "%" if not query else f"%{query}%"
 
     sql = (
-        "SELECT key, ref_type, author, title, year, journal, publisher, doi, bibtex "
+        "SELECT key, ref_type, author, title, year, journal, publisher, doi, bibtex, "
+        "created_at, updated_at "
         "FROM books "
         "WHERE (COALESCE(key,'') LIKE :q OR COALESCE(ref_type,'') LIKE :q "
         "OR COALESCE(author,'') LIKE :q OR COALESCE(title,'') LIKE :q "
         "OR COALESCE(CAST(year AS TEXT),'') LIKE :q OR COALESCE(journal,'') LIKE :q "
         "OR COALESCE(publisher,'') LIKE :q)"
     )
+
     params = {"q": q}
 
     if ref_type:
@@ -196,6 +199,7 @@ def find_books(query, ref_type=None, doi_query=None):
 
     result = db.session.execute(text(sql), params)
     rows = result.fetchall()
+
     return [
         {
             "key": r[0],
@@ -207,6 +211,8 @@ def find_books(query, ref_type=None, doi_query=None):
             "publisher": r[6],
             "doi": r[7],
             "bibtex": r[8],
+            "created_at": r[9],
+            "updated_at": r[10],
         }
         for r in rows
     ]

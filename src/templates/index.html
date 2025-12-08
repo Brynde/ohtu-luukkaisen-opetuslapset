@@ -76,13 +76,18 @@
                 {{ source.ref_type }}
             {% endif %}
             </p>
+
             <p><strong>Vuosi:</strong> {{ source.year }}</p>
             {% if source.journal or source.publisher %}
             <p><strong>Julkaisu / Kustantaja:</strong>
                 {{ source.journal if source.journal else source.publisher }}</p>
             {% endif %}
 
-            {# DOI-nappi + piilotettu DOI, vain jos doi on olemassa #}
+            <p><strong>Lisätty:</strong> {{ source.created_at }}</p>
+            {% if source.updated_at %}
+                <p><strong>Muokattu:</strong> {{ source.updated_at }}</p>
+            {% endif %}
+
             {% if source.doi %}
             <p>
                 <strong>DOI:</strong>
