@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "forms/base.html" %}
 
 {% block title %}Lisää uusi viite{% endblock %}
 
@@ -92,3 +92,5 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 {% endblock %}
+
+{% block options %}{{ super() }}{% endblock %}

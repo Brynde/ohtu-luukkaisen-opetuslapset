@@ -1,0 +1,23 @@
+{% extends "source_pages/base.html" %}
+
+{% block title %}Etsi viite{% endblock %}
+
+{% block header %}Etsi viite{% endblock %}
+
+{% block messages %}{{ super () }}{% endblock %}
+
+{% block body %}
+
+{% block options %}
+{{ super() }}
+    <a class="add-button" href="/">Palaa etusivulle</a>
+{% endblock %}
+
+    <h2>Hakutulokset</h2>
+    {% if sources %}
+      {% block source_cards %}{{ super () }}{% endblock %}
+    {% else %}
+        <p>Ei tuloksia {% if query %} hakusanalla: "{{ query }}" {% endif %} {% if query and ref_type %} ja {% endif %} {% if ref_type %} tyypillä: "{{ ref_type }}" {% endif %} </p>
+    {% endif %}
+        
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "source_pages/base.html" %}
+
+{% block title %}Omat lähteet{% endblock %}
+
+{% block header %}Omat lähteet{% endblock %}
+
+{% block messages %}{{ super () }}{% endblock %}
+
+{% block body %}
+
+{% block options %}
+{{ super() }}
+
+    <form method="get" name="sort" id="sort">
+        <label for="sort">Lajittele lähteet</label><br>
+        <select name="sort">
+            <option value="title">Otsikon mukaan A-Ö</option>
+            <option value="title DESC">Otsikon mukaan Ö-A</option>
+            <option value="year DESC">Uusin ensin</option>
+            <option value="year">Vanhin ensin</option>
+            <option value="created_at DESC">Luotu viimeiseksi</option>
+            <option value="updated_at DESC">Muokattu viimeiseksi</option>
+            <option value="created_at">Luotu ensin</option>
+            <option value="updated_at">Muokattu ensin</option>
+        </select>
+        <input type="submit" value="Lajittele">
+    </form>
+    <br><br>
+{% endblock %}
+
+{% if sources %}
+    {% block source_cards %}{{ super () }}{% endblock %}
+{% else %}
+    <p>Lähteitä ei löytynyt. Lisää uusi viite yläpuolelta!</p>
+{% endif %}
+
+{% endblock %}

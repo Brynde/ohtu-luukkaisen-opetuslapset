@@ -1,0 +1,94 @@
+{% extends "forms/base.html" %}
+
+{% block title %} Muokkaa viitettä {{ source.key }}{% endblock %}
+
+{% block header %} Muokkaa viitettä {{ source.key }}{% endblock %}
+
+{% block messages %}{{ super() }}{% endblock %}
+
+{% block body %}
+
+<form action="/sources/update_item" method="POST">
+
+    <label for="key">Viiteavain (key):</label><br>
+    <input type="text" id="key" name="key"
+            value="{{ request.form.get('key', source.key) }}" required><br><br>
+
+    <label for="ref_type">Tyyppi:</label><br>
+    {% set selected_type = request.form.get('ref_type', source.ref_type) %}
+    <select id="ref_type" name="ref_type">
+        <option value="article" {% if selected_type == "article" %}selected{% endif %}>article</option>
+        <option value="book" {% if selected_type == "book" %}selected{% endif %}>book</option>
+        <option value="inproceedings" {% if selected_type == "inproceedings" %}selected{% endif %}>inproceedings</option>
+    </select><br><br>
+
+    <label for="author">Tekijä(t):</label><br>
+    <input type="text" id="author" name="author"
+            value="{{ request.form.get('author', source.author) }}" required><br><br>
+
+    <label for="title">Otsikko (title):</label><br>
+    <input type="text" id="title" name="title"
+            value="{{ request.form.get('title', source.title) }}" required><br><br>
+
+    <label for="year">Vuosi (year):</label><br>
+    <input type="number" id="year" name="year"
+            value="{{ request.form.get('year', source.year) }}" required><br><br>
+
+    <label for="journal">Lehti / Konferenssi (journal/booktitle):</label><br>
+    <input type="text" id="journal" name="journal"
+            value="{{ request.form.get('journal', source.journal) }}"><br><br>
+
+    <label for="publisher">Kustantaja (publisher):</label><br>
+    <input type="text" id="publisher" name="publisher"
+            value="{{ request.form.get('publisher', source.publisher) }}"><br><br>
+
+    <label for="tags">Tunnisteet:</label><br>
+    <div class="tags-dropdown">
+    <button type="button" id="tags-toggle">Valitse tunnisteet ▾</button>
+    <div id="tags-panel" class="hidden panel" aria-hidden="true">
+        <div class="tags-list" style="max-height:200px;overflow:auto;">
+        {% for t in tags|default([]) %}
+            <label style="display:block;padding:2px">
+            <input type="checkbox" name="tags" value="{{ t }}"
+                {% if t in selected_tags %}checked{% endif %}>
+            {{ t }}
+            </label>
+        {% endfor %}
+        </div>
+        <hr>
+        <label for="new_tags">Lisää uusia tunnisteita (pilkuilla tai rivinvaihdolla):</label><br>
+        <textarea id="new_tags" name="new_tags" rows="3" style="width:100%">{{ request.form.get('new_tags', '') }}</textarea>
+        <div style="margin-top:6px;font-size:0.9em;color:#555">Uudet tunnisteet luodaan lomakkeen lähetyksessä.</div>
+    </div>
+    </div>
+    <br><br>
+
+    <label for="doi">DOI:</label><br>
+    <input type="text" id="doi" name="doi"
+            value="{{ request.form.get('doi', source.doi) }}"><br><br>
+
+    <button type="submit">Tallenna viite</button>
+</form>
+
+<p>
+    <a href="/sources">Takaisin viitelistaan</a>
+</p>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+const toggle = document.getElementById('tags-toggle');
+const panel = document.getElementById('tags-panel');
+if (!toggle || !panel) return;
+toggle.addEventListener('click', function () {
+    panel.classList.toggle('hidden');
+    panel.setAttribute('aria-hidden', panel.classList.contains('hidden'));
+});
+document.addEventListener('click', function (e) {
+    if (!panel.contains(e.target) && e.target !== toggle) panel.classList.add('hidden');
+});
+});
+</script>
+
+{% endblock %}
+
+{% block options %}{{ super() }}{% endblock %}

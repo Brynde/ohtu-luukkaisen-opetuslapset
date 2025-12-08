@@ -1,66 +1,55 @@
 {% extends "layout.html" %}
 
-{% block title %}Omat lähteet{% endblock %}
+{% block title %}{% endblock %}
 
-{% block header %}Omat lähteet{% endblock %}
+{% block header %}{% endblock %}
 
-{% block messages %}{{ super () }}{% endblock %}
+{% block messages %}{{ super() }}{% endblock %}
 
-{% block body %}
+{% block body %}{% endblock %}
+
+{% block options %}
 
 <a href="/sources/new" class="add-button" id="new_source">+ Lisää uusi lähde</a>
 
 <form action="/sources/find_source" method="get">
-        <p>
-            <label for="query">Hae viitteitä:</label><br><br>
-            <input type="text" name="query" value="{{ query }}">
-        </p>
+    <p>
+        <label for="query">Hae viitteitä:</label><br><br>
+        <input type="text" name="query" value="{{ query }}">
+    </p>
 
-        <p>
-            <label for="doi_query">Hae DOI-tunnisteella:</label><br>
-            <input type="text" id="doi_query" name="doi_query" value="{{ doi_query }}">
-        </p>
+    <p>
+        <label for="doi_query">Hae DOI-tunnisteella:</label><br>
+        <input type="text" id="doi_query" name="doi_query" value="{{ doi_query }}">
+    </p>
 
-        <p>
-            <label for="ref_type">Tyyppi:</label><br>
-            <select name="ref_type">
-                <option value="">Kaikki</option>
-                <option value="book" {% if ref_type == 'book' %}selected{% endif %}>kirja</option>
-                <option value="inproceedings" {% if ref_type == 'inproceedings' %}selected{% endif %}>konferenssiartikkeli</option>
-                <option value="article" {% if ref_type == 'article' %}selected{% endif %}>artikkeli</option>
-            </select>
-        </p>
-        <input type="submit" value="Hae">
-    </form><br><br>
-
-    <form method="get" name="sort" id="sort">
-        <label for="sort">Lajittele lähteet</label>
-        <select name="sort">
-            <option value="title">Otsikon mukaan A-Ö</option>
-            <option value="title DESC">Otsikon mukaan Ö-A</option>
-            <option value="year DESC">Uusin ensin</option>
-            <option value="year">Vanhin ensin</option>
-            <option value="created_at DESC">Luotu viimeiseksi</option>
-            <option value="updated_at DESC">Muokattu viimeiseksi</option>
-            <option value="created_at">Luotu ensin</option>
-            <option value="updated_at">Muokattu ensin</option>
-        </select>
-        <input type="submit" value="Lajittele">
-    </form>
-
-    <form action="/" method="get" style="display:inline-block;">
-        <label for="tag">Suodata tunnisteen mukaan:</label><br>
-        <select id="tag" name="tag" onchange="this.form.submit()">
+    <p>
+        <label for="ref_type">Tyyppi:</label><br>
+        <select name="ref_type">
             <option value="">Kaikki</option>
-            {% for t in tags|default([]) %}
-                <option value="{{ t }}" {% if selected_tag == t %}selected{% endif %}>{{ t }}</option>
-            {% endfor %}
+            <option value="book" {% if ref_type == 'book' %}selected{% endif %}>kirja</option>
+            <option value="inproceedings" {% if ref_type == 'inproceedings' %}selected{% endif %}>konferenssiartikkeli</option>
+            <option value="article" {% if ref_type == 'article' %}selected{% endif %}>artikkeli</option>
         </select>
-        <input type="hidden" name="doi_query" value="{{ doi_query|default('') }}">
-    </form>
-    <br><br>
+    </p>
+    <input class="add-button" type="submit" value="Hae">
 
-{% if sources %}
+    <form action="/sources/find_source" method="get">
+            <p>
+                <label for="tag">Suodata tunnisteen mukaan:</label><br>
+                <select id="tag" name="tag" onchange="this.form.submit()">
+                    <option value="">Kaikki</option>
+                    {% for t in tags|default([]) %}
+                        <option value="{{ t }}" {% if selected_tag == t %}selected{% endif %}>{{ t }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </form>
+</form>
+
+{% endblock %}
+
+{% block source_cards %}
     {% for source in sources %}
         <div class="source-card">
             <h3>{{ source.title }}</h3>
@@ -76,18 +65,13 @@
                 {{ source.ref_type }}
             {% endif %}
             </p>
-
             <p><strong>Vuosi:</strong> {{ source.year }}</p>
             {% if source.journal or source.publisher %}
-            <p><strong>Julkaisu / Kustantaja:</strong>
+            <p><strong>Julkaisu / Kustantaja:</strong> 
                 {{ source.journal if source.journal else source.publisher }}</p>
             {% endif %}
 
-            <p><strong>Lisätty:</strong> {{ source.created_at }}</p>
-            {% if source.updated_at %}
-                <p><strong>Muokattu:</strong> {{ source.updated_at }}</p>
-            {% endif %}
-
+            {# DOI-nappi + piilotettu DOI, vain jos doi on olemassa #}
             {% if source.doi %}
             <p>
                 <strong>DOI:</strong>
@@ -108,30 +92,27 @@
                 {% endif %}
             </p>
 
+
+
             <br>
             <h3>BibTeX koodi:</h3>
             <div class="bib-controls">
             <button type="button" class="toggle-bib" data-target="bib-{{ source.key }}">Näytä BibTeX</button>
             <button type="button" class="copy-bib" data-target="bib-{{ source.key }}">Kopioi</button>
             </div>
-            <pre id="bib-{{ source.key }}" class="bibcode" style="display:none; white-space: pre-wrap;">{{ source.bibtex }}</pre>
-
-        <div class="buttons">
-            <button class="edit-btn"><a class="edit-btn" href="{{ url_for('edit_source', source_key=source.key) }}">Muokkaa</a></button>
-            <form action="{{ url_for('delete_source', source_key=source.key) }}" method="post" style="display:inline">
-                <button class="delete-btn" type="submit"
-                        onclick="return confirm('Haluatko varmasti poistaa tämän lähteen?')">
-                    Poista
-                </button>
-            </form>
-        </div>
-        </div>
+                <pre id="bib-{{ source.key }}" class="bibcode" style="display:none; white-space: pre-wrap;">{{ source.bibtex }}</pre>
+            <div class="buttons">
+                <button class="edit-btn"><a href="{{ url_for('edit_source', source_key=source.key) }}">Muokkaa</a></button>
+                <form action="{{ url_for('delete_source', source_key=source.key) }}" method="post" style="display:inline">
+                    <button class="delete-btn" type="submit"
+                            onclick="return confirm('Haluatko varmasti poistaa tämän lähteen?')">
+                        Poista
+                    </button>
+                </form>
+            </div>
+            </div>
     {% endfor %}
-{% else %}
-    <p>Lähteitä ei löytynyt. Lisää uusi viite yläpuolelta!</p>
-{% endif %}
-
-<script>
+ <script>
 document.addEventListener('click', (e) => {
   if (e.target.matches('.toggle-bib')) {
     const id = e.target.dataset.target;
@@ -184,5 +165,4 @@ function fallbackCopy(text, buttonEventTarget) {
   }
 }
 </script>
-
 {% endblock %}

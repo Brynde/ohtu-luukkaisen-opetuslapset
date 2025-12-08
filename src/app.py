@@ -47,7 +47,7 @@ def index():
 
     all_tags = get_tags()
 
-    return render_template("index.html", sources=sources, doi_query=doi_query, tags=all_tags, selected_tag=selected_tag)
+    return render_template("source_pages/index.html", sources=sources, doi_query=doi_query, tags=all_tags, selected_tag=selected_tag)
 
 
 @app.route("/sources")
@@ -85,16 +85,16 @@ def new_source():
                     attach_tag(book_id, tag_id)
                 except UserInputError as error:
                     flash(str(error))
-                    return render_template("new_reference.html", tags=tags)
+                    return render_template("forms/new_reference.html", tags=tags)
             db.session.commit()
             return redirect("/")
         except IntegrityError:
             flash("Viiteavain on jo käytössä. Anna jokaiselle lähteelle yksilöllinen avain.")
-            return render_template("new_reference.html", tags=tags)
+            return render_template("forms/new_reference.html", tags=tags)
         except Exception as error:
             flash(str(error))
-            return render_template("new_reference.html", tags=tags)
-    return render_template("new_reference.html", tags=tags)
+            return render_template("forms/new_reference.html", tags=tags)
+    return render_template("forms/new_reference.html", tags=tags)
 
 @app.route("/sources/edit/<string:source_key>")
 def edit_source(source_key):
@@ -110,7 +110,7 @@ def edit_source(source_key):
         selected = tags_map.get(sdict["id"], [])
     elif "key" in sdict and sdict.get("key") in tags_map:
         selected = tags_map.get(sdict.get("key"), [])
-    return render_template("edit_reference.html", key=source_key, source=sdict, tags=tags, selected_tags=selected)
+    return render_template("forms/edit_reference.html", key=source_key, source=sdict, tags=tags, selected_tags=selected)
 
 @app.route("/sources/update_item", methods=["POST"])
 def update_source():
@@ -152,7 +152,7 @@ def update_source():
                     selected = tags_map.get(sdict["id"], [])
                 elif "key" in sdict and sdict.get("key") in tags_map:
                     selected = tags_map.get(sdict.get("key"), [])
-                return render_template("edit_reference.html", key=source_key, source=source, tags=tags, selected_tags=selected)
+                return render_template("forms/edit_reference.html", key=source_key, source=source, tags=tags, selected_tags=selected)
         db.session.commit()
         return redirect("/")
     except Exception as error:
@@ -166,7 +166,7 @@ def update_source():
             selected = tags_map.get(sdict["id"], [])
         elif "key" in sdict and sdict.get("key") in tags_map:
             selected = tags_map.get(sdict.get("key"), [])
-        return render_template("edit_reference.html", key=source_key, source=source, tags=tags, selected_tags=selected)
+        return render_template("forms/edit_reference.html", key=source_key, source=source, tags=tags, selected_tags=selected)
 
 
 @app.route("/sources/delete/<string:source_key>", methods=["POST"])
@@ -207,7 +207,7 @@ def find_source():
     all_tags = get_tags()
 
     return render_template(
-        "find_reference.html",
+        "source_pages/find_reference.html",
         query=query,
         ref_type=ref_type,
         doi_query=doi_query,
