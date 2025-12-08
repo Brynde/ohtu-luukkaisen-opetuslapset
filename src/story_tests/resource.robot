@@ -36,7 +36,7 @@ New Source Form Should Be Open
 
 Home Page Should Be Open
     Location Should Be  ${HOME_URL}
-    Title Should Be  Omat lähteet
+    Title Should Be  Source Penguin
 
 Go To Starting Page
     Go To  ${HOME_URL}
