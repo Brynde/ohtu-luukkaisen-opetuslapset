@@ -10,6 +10,7 @@
 
 <form method="POST">
 
+    <p>* merkityt kentät ovat pakollisia </p>
     <label for="key">Viiteavain (key): <span class="required">*</span></label><br>
     <input type="text" id="key" name="key" required
             value="{{ request.form.get('key', '') }}"><br><br>
