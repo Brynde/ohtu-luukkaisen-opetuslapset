@@ -1,7 +1,13 @@
 body {
     font-family: Arial, sans-serif;
     margin: 40px;
-    background: linear-gradient(#9dd6ff, #ffffff);
+    background: radial-gradient(
+        circle at center,
+        #bfe6ff 0%,
+        #9dd6ff 40%,
+        #0074c2 75%,
+        #003366 100%
+    );
     background-attachment: fixed;
     color: #003366;
 }
@@ -14,7 +20,7 @@ h1 {
 .add-button {
     display: inline-block;
     padding: 10px 18px;
-    background-color: #ffcc00;    
+    background-color: #ffcc00;
     color: #003366;
     font-weight: bold;
     border-radius: 8px;
