@@ -26,7 +26,11 @@
       {% endblock %}
     </h1>
 
-    <img class="puffle-gif" src="{{ url_for('static', filename=get_random_gif()) }}" alt="Puffle GIF">
+    {% if request.endpoint == 'find_source' %}
+      <img class="puffle-gif" src="{{ url_for('static', filename='search.png') }}" alt="Search PNG">
+    {% else %}
+      <img class="puffle-gif" src="{{ url_for('static', filename=get_random_gif()) }}" alt="Puffle GIF">
+    {% endif %}
 
     {% block messages %}
       {% with messages = get_flashed_messages() %}

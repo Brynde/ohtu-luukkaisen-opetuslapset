@@ -60,4 +60,4 @@ def validate_book(key, ref_type, author, title, year, journal, publisher, doi=No
         validate_publisher(publisher)
 
 def get_random_gif():
-    return f"gifs/{randint(1,1)}.gif"
+    return f"gifs/{randint(1,8)}.gif"
