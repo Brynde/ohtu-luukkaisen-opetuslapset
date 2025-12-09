@@ -35,6 +35,12 @@
       {% block page_header %}{% endblock %}
     </div>
 
+    <nav class="main-toolbar">
+      <a href="{{ url_for('index') }}" class="misc-button">Etusivu</a>
+      <a href="{{ url_for('new_source') }}" class="add-button">+ Lisää uusi lähde</a>
+      <a href="{{ url_for('find_source') }}" class="misc-button">Hae viitteitä</a>
+    </nav>
+
     {% block body %}{% endblock %}
   </body>
 </html>

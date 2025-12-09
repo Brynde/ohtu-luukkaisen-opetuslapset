@@ -189,3 +189,36 @@ h1.site-header {
     }
 
     body { padding-top: 70px; }
+
+.tags-dropdown .panel { 
+    position: absolute; 
+    left:0; 
+    z-index: 50; 
+    background:#fff; 
+    border:1px solid #ccc; 
+    padding:8px; 
+    width:320px; 
+    box-shadow:0 2px 8px rgba(0,0,0,0.1); 
+}
+
+.main-toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 900;
+    background: #0280cd;
+    padding: 8px 16px;
+    border-radius: 20px 20px 0 0;
+    border-top: 3px solid #00ccff;
+    border-left: 3px solid #00ccff;
+    border-right: 3px solid #00ccff;
+    box-shadow: 0 -4px 0 #003366;
+    display: flex;
+    gap: 10px;
+}
+
+body {
+    padding-top: 70px;
+    padding-bottom: 80px;
+}
