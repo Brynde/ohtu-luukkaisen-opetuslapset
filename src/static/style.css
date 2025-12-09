@@ -209,8 +209,13 @@ h1.site-header {
     left: 12px;
     z-index: 1000;
     margin: 0;
-    background: rgba(82, 200, 255, 0.9);
-    padding: 6px 10px;
+    background: #0280cd;
+    border-top: 3px solid #00ccff;
+    border-left: 3px solid #00ccff;
+    border-bottom: 3px solid #00529b;
+    border-right: 3px solid #00529b;
+    box-shadow: 0 4px 0 #003366;
+    padding: 6px 10px 2px 6px;
     border-radius: 6px;
 }
 

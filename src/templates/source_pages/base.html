@@ -8,42 +8,6 @@
 
 {% block options %}
 
-<a href="/sources/new" class="misc-button" id="new_source">+ Lisää uusi lähde</a>
-
-<form action="/sources/find_source" method="get">
-    <p>
-        <label for="query">Hae viitteitä:</label><br><br>
-        <input type="text" class="text-field" name="query" value="{{ query }}">
-    </p>
-
-    <p>
-        <label for="doi_query">Hae DOI-tunnisteella:</label><br>
-        <input type="text" class="text-field" id="doi_query" name="doi_query" value="{{ doi_query }}">
-    </p>
-
-    <p>
-        <label for="ref_type">Tyyppi:</label><br>
-        <select name="ref_type" class="text-field">
-            <option value="">Kaikki</option>
-            <option value="book" {% if ref_type == 'book' %}selected{% endif %}>kirja</option>
-            <option value="inproceedings" {% if ref_type == 'inproceedings' %}selected{% endif %}>konferenssiartikkeli</option>
-            <option value="article" {% if ref_type == 'article' %}selected{% endif %}>artikkeli</option>
-        </select>
-    </p>
-    <input class="misc-button" type="submit" value="Hae">
-
-    <form action="/sources/find_source" method="get">
-            <p>
-                <label for="tag">Suodata tunnisteen mukaan:</label><br>
-                <select id="tag" class="text-field" name="tag" onchange="this.form.submit()">
-                    <option value="">Kaikki</option>
-                    {% for t in tags|default([]) %}
-                        <option value="{{ t }}" {% if selected_tag == t %}selected{% endif %}>{{ t }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-        </form>
-</form>
 
 {% endblock %}
 

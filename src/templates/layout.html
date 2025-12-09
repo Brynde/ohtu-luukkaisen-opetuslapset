@@ -22,7 +22,7 @@
   <body>
     <h1 class="site-header">
       {% block header %}
-        <img src="{{ url_for('static', filename='SOURCE-PENGUIN-V1.png') }}" alt="Source Penguin">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Source Penguin">
       {% endblock %}
     </h1>
 
@@ -81,17 +81,7 @@
           </label>
         </div>
 
-        <div class="toolbar-group">
-          <label>Lajittele:
-            <select name="sort" class="toolbar-input">
-              <option value="" {% if not request.args.get('sort') %}selected{% endif %}>Ei lajittelua</option>
-              <option value="title_asc"  {% if request.args.get('sort')=='title_asc' %}selected{% endif %}>Otsikon mukaan A-Ö</option>
-              <option value="title_desc" {% if request.args.get('sort')=='title_desc' %}selected{% endif %}>Otsikon mukaan Ö-A</option>
-              <option value="year_desc"  {% if request.args.get('sort')=='year_desc' %}selected{% endif %}>Uusin ensin</option>
-              <option value="year_asc"   {% if request.args.get('sort')=='year_asc' %}selected{% endif %}>Vanhin ensin</option>
-            </select>
-          </label>
-        </div>
+
 
         {% if tags is defined %}
         <div class="toolbar-group">
