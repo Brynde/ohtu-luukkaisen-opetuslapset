@@ -11,7 +11,7 @@ body {
     background-attachment: fixed;
     color: #003366;
     padding-top: 70px;
-    padding-bottom: 110px;
+    padding-bottom: 220px;
 }
 
 h1 {
@@ -203,24 +203,34 @@ img.puffle-gif {
     left: 0;
     right: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 10;
     background: #0280cd;
     border-top: 3px solid #00ccff;
     box-shadow: 0 -4px 0 #003366;
-    padding: 12px 20px;
-    display: flex;
-    justify-content: center;
-    pointer-events: none;
+    padding: 6px 12px;
+    overflow-x: auto;
 }
 
 .toolbar-form {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-    gap: 12px 24px;
-    max-width: 1200px;
-    width: 100%;
+    gap: 12px;
+    width: max-content;    
+    margin: 0 auto;
+    padding: 6px 0;
+}
+
+.main-toolbar .toolbar-form {
+    transform: translateX(-40px);  
+}
+
+.toolbar-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
 }
 
 .toolbar-group label {
@@ -229,14 +239,14 @@ img.puffle-gif {
     font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
 }
 
 .toolbar-input {
-    border-radius: 16px;
+    border-radius: 12px;
     border: none;
-    padding: 4px 10px;
-    min-width: 150px;
+    padding: 4px 8px;
+    min-width: 120px;
     background-color: #003366;
     color: #ffffff;
     border-top: 3px solid #00529b;

@@ -73,6 +73,18 @@
           </label>
         </div>
 
+        <div class="toolbar-group">
+          <label>Lajittele:
+            <select name="sort" class="toolbar-input">
+              <option value="" {% if not request.args.get('sort') %}selected{% endif %}>Ei lajittelua</option>
+              <option value="title_asc"  {% if request.args.get('sort')=='title_asc' %}selected{% endif %}>Otsikon mukaan A-Ö</option>
+              <option value="title_desc" {% if request.args.get('sort')=='title_desc' %}selected{% endif %}>Otsikon mukaan Ö-A</option>
+              <option value="year_desc"  {% if request.args.get('sort')=='year_desc' %}selected{% endif %}>Uusin ensin</option>
+              <option value="year_asc"   {% if request.args.get('sort')=='year_asc' %}selected{% endif %}>Vanhin ensin</option>
+            </select>
+          </label>
+        </div>
+
         {% if tags is defined %}
         <div class="toolbar-group">
           <label>Suodata tunnisteen mukaan:
