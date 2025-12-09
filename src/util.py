@@ -1,3 +1,5 @@
+from random import randint
+
 class UserInputError(Exception):
     pass
 
@@ -56,3 +58,6 @@ def validate_book(key, ref_type, author, title, year, journal, publisher, doi=No
         validate_journal(journal)
     if publisher:
         validate_publisher(publisher)
+
+def get_random_gif():
+    return f"gifs/{randint(1,1)}.gif"

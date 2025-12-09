@@ -18,8 +18,7 @@
   </style>
   <body>
     <h1 class="site-header">{% block header %}<img src="{{ url_for('static', filename='SOURCE-PENGUIN-V1.png') }}" alt="Source Penguin">{% endblock %}</h1>
-
-    <img class="puffle-gif" src="{{ url_for('static', filename='spinning-puffles.gif') }}" alt="Puffle GIF">
+    <img class="puffle-gif" src="{{ url_for('static', filename=get_random_gif()) }}" alt="Puffle GIF">
 
     {% block messages %}
       {% with messages = get_flashed_messages() %}

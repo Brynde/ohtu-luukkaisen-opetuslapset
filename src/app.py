@@ -5,9 +5,10 @@ from flask import redirect, render_template, request, jsonify, flash
 from db_helper import reset_db
 from repositories.book_repository import get_books, create_book, get_info, edit_book, delete_book, find_books
 from config import app, db
-from util import validate_book, UserInputError
+from util import validate_book, UserInputError, get_random_gif
 from repositories.tag_repository import get_tags, find_tags, create_tag, attach_tag
 
+app.jinja_env.globals.update(get_random_gif=get_random_gif)
 
 def _row_to_dict(row):
     if isinstance(row, dict):
