@@ -239,3 +239,7 @@ def reset_database():
     db.session.commit()
 
     return jsonify({"message": "db reset"})
+
+@app.route("/kiitos_demosta")
+def kiitos_demosta():
+    return render_template("source_pages/kiitos_demosta.html")

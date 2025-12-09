@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Kiitos demosta!{% endblock %}
+{% block header %}Kiitos demosta!{% endblock %}
+{% block messages %}{{ super() }}{% endblock %}
+
+{% block content %}
+  <div class="thank-you">
+    <h2>T: Luukkaisen opetuslapset</h2>
+    <p>(Kasperi, Anna, Bryn, Matias)</p>
+  </div>
+
+  <div class="gif-grid">
+    {% for _ in range(20) %}
+      <img class="demo-gif" src="{{ url_for('static', filename=get_random_gif()) }}" alt="Demo GIF">
+    {% endfor %}
+  </div>
+
+  <style>
+    .gif-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .demo-gif { width: 100%; height: auto; display:block; border-radius:6px; }
+    .thank-you { max-width:800px; margin-bottom:12px; }
+  </style>
+{% endblock %}
