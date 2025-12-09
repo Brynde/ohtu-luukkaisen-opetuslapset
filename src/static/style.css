@@ -10,6 +10,8 @@ body {
     );
     background-attachment: fixed;
     color: #003366;
+    padding-top: 70px;
+    padding-bottom: 110px;
 }
 
 h1 {
@@ -35,7 +37,11 @@ h1 {
     transform: translateY(-2px);
 }
 
-.misc-button, .copy-button, .doi-button, .delete-btn, .edit-btn{
+.misc-button,
+.copy-button,
+.doi-button,
+.delete-btn,
+.edit-btn {
     display: inline-block;
     padding: 10px 18px;
     background-color: #027cc8;
@@ -50,7 +56,10 @@ h1 {
     transition: transform 0.1s;
 }
 
-.misc-button:hover, .copy-button:hover, .doi-button:hover, .edit-btn:hover{
+.misc-button:hover,
+.copy-button:hover,
+.doi-button:hover,
+.edit-btn:hover {
     background-color: #00b3e8;
     transform: translateY(-2px);
 }
@@ -66,19 +75,19 @@ h1 {
     color: white;
     border: 3px solid #cc0000;
 }
- 
+
 .cards {
     display: grid;
     grid-template-columns: repeat(2, 39em);
     justify-content: center;
 }
 
-.forms{
+.forms {
     display: grid;
     justify-content: center;
 }
 
-.source-card{
+.source-card {
     background: #0280cd;
     backdrop-filter: blur(4px);
     padding: 18px;
@@ -98,7 +107,7 @@ h1 {
     font-weight: bold;
 }
 
-.source-card p{
+.source-card p {
     color: black;
 }
 
@@ -108,7 +117,7 @@ h1 {
     border-radius: 19px;
 }
 
-.code p{
+.code p {
     color: white;
 }
 
@@ -118,7 +127,8 @@ h1 {
     gap: 10px;
 }
 
-.text-field, text{
+.text-field,
+text {
     background-color: #003366;
     border-radius: 1000px;
     padding: 1em;
@@ -129,7 +139,6 @@ h1 {
     border-right: 3px solid #01c0f6;
     box-shadow: 0 4px 0 #003366;
 }
-
 
 .code-box {
     background-color: #e8f7ff;
@@ -146,79 +155,92 @@ h1 {
     font-weight: bold;
 }
 
-.hidden { 
-    display: none; 
+.hidden {
+    display: none;
 }
-    
+
 .tags-dropdown {
-    position: relative; 
-    display:block; 
+    position: relative;
+    display: block;
 }
-    
-.tags-dropdown .panel { 
-    position: absolute; 
-    left:0; 
-    z-index: 50; 
-    background:#fff; 
-    border:1px solid #ccc; 
-    padding:8px; 
-    width:320px; 
-    box-shadow:0 2px 8px rgba(0,0,0,0.1); 
+
+.tags-dropdown .panel {
+    position: absolute;
+    left: 0;
+    z-index: 50;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: 320px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1.site-header {
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 1000;
-      margin: 0;
-      background: rgba(82, 200, 255, 0.9);
-      padding: 6px 10px;
-      border-radius: 6px;
-    }
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1000;
+    margin: 0;
+    background: rgba(82, 200, 255, 0.9);
+    padding: 6px 10px;
+    border-radius: 6px;
+}
 
-    img.puffle-gif {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      z-index: 1000;
-      width: 200px; /* adjust size as needed */
-      height: auto;
-      pointer-events: none; /* so it doesn't block clicks */
-      background: transparent;
-    }
-
-    body { padding-top: 70px; }
-
-.tags-dropdown .panel { 
-    position: absolute; 
-    left:0; 
-    z-index: 50; 
-    background:#fff; 
-    border:1px solid #ccc; 
-    padding:8px; 
-    width:320px; 
-    box-shadow:0 2px 8px rgba(0,0,0,0.1); 
+img.puffle-gif {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 1000;
+    width: 200px;
+    height: auto;
+    pointer-events: none;
+    background: transparent;
 }
 
 .main-toolbar {
     position: fixed;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 900;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
     background: #0280cd;
-    padding: 8px 16px;
-    border-radius: 20px 20px 0 0;
     border-top: 3px solid #00ccff;
-    border-left: 3px solid #00ccff;
-    border-right: 3px solid #00ccff;
     box-shadow: 0 -4px 0 #003366;
+    padding: 12px 20px;
     display: flex;
-    gap: 10px;
+    justify-content: center;
 }
 
-body {
-    padding-top: 70px;
-    padding-bottom: 80px;
+.toolbar-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px 24px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.toolbar-group label {
+    color: #003366;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.toolbar-input {
+    border-radius: 16px;
+    border: none;
+    padding: 4px 10px;
+    min-width: 150px;
+    background-color: #003366;
+    color: #ffffff;
+    border-top: 3px solid #00529b;
+    border-left: 3px solid #00529b;
+    border-bottom: 3px solid #01c0f6;
+    border-right: 3px solid #01c0f6;
+    box-shadow: 0 2px 0 #003366;
 }

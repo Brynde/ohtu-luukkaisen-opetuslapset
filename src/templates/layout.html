@@ -2,43 +2,92 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
+
   <style>
     .hidden { display: none; }
     .tags-dropdown { position: relative; display:block; }
-    .tags-dropdown .panel { position: absolute; left:0; z-index: 50; background:#fff; border:1px solid #ccc; padding:8px; width:320px; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    .tags-dropdown .panel {
+      position: absolute; left:0; z-index: 50; background:#fff;
+      border:1px solid #ccc; padding:8px; width:320px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
   </style>
+
   <body>
-    <h1 class="site-header">{% block header %}<img src="{{ url_for('static', filename='SOURCE-PENGUIN-V1.png') }}" alt="Source Penguin">{% endblock %}</h1>
+    <h1 class="site-header">
+      {% block header %}
+        <img src="{{ url_for('static', filename='SOURCE-PENGUIN-V1.png') }}" alt="Source Penguin">
+      {% endblock %}
+    </h1>
+
     <img class="puffle-gif" src="{{ url_for('static', filename=get_random_gif()) }}" alt="Puffle GIF">
 
     {% block messages %}
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           {% for message in messages %}
-          <h3>{{ message }}</h3>
+            <h3>{{ message }}</h3>
           {% endfor %}
         {% endif %}
       {% endwith %}
     {% endblock %}
 
-    {# page-specific header placed under the site header; child templates can override #}
     <div class="page-header-wrapper">
       {% block page_header %}{% endblock %}
     </div>
 
     <nav class="main-toolbar">
-      <a href="{{ url_for('index') }}" class="misc-button">Etusivu</a>
-      <a href="{{ url_for('new_source') }}" class="add-button">+ Lisää uusi lähde</a>
-      <a href="{{ url_for('find_source') }}" class="misc-button">Hae viitteitä</a>
+      <form class="toolbar-form" method="GET" action="{{ url_for('find_source') }}">
+
+        <a href="{{ url_for('index') }}" class="misc-button">Etusivu</a>
+        <a href="{{ url_for('new_source') }}" class="add-button">+ Lisää uusi lähde</a>
+
+        <div class="toolbar-group">
+          <label>Hae viitteitä:
+            <input type="text" name="query" class="toolbar-input"
+                   value="{{ request.args.get('query', '') }}">
+          </label>
+        </div>
+
+        <div class="toolbar-group">
+          <label>Hae DOI-tunnisteella:
+            <input type="text" name="doi_query" class="toolbar-input"
+                   value="{{ request.args.get('doi_query', '') }}">
+          </label>
+        </div>
+
+        <div class="toolbar-group">
+          <label>Tyyppi:
+            <select name="ref_type" class="toolbar-input">
+              <option value=""  {% if not request.args.get('ref_type') %}selected{% endif %}>Kaikki</option>
+              <option value="article" {% if request.args.get('ref_type')=='article' %}selected{% endif %}>artikkeli</option>
+              <option value="book" {% if request.args.get('ref_type')=='book' %}selected{% endif %}>kirja</option>
+              <option value="inproceedings" {% if request.args.get('ref_type')=='inproceedings' %}selected{% endif %}>konferenssiartikkeli</option>
+            </select>
+          </label>
+        </div>
+
+        {% if tags is defined %}
+        <div class="toolbar-group">
+          <label>Suodata tunnisteen mukaan:
+            <select name="tag" class="toolbar-input">
+              <option value="" {% if not request.args.get('tag') %}selected{% endif %}>Kaikki</option>
+              {% for t in tags %}
+              <option value="{{ t }}" {% if request.args.get('tag') == t %}selected{% endif %}>{{ t }}</option>
+              {% endfor %}
+            </select>
+          </label>
+        </div>
+        {% endif %}
+
+        <button type="submit" class="misc-button">Hae</button>
+      </form>
     </nav>
 
     {% block body %}{% endblock %}
