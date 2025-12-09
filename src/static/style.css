@@ -1,3 +1,31 @@
+.main-toolbar {
+    padding: 4px 8px;
+    font-size: 0.85rem;
+}
+
+.main-toolbar .toolbar-form {
+    gap: 8px;
+}
+
+.main-toolbar .toolbar-group {
+    gap: 4px;
+}
+
+.main-toolbar .toolbar-group label {
+    font-size: 0.8rem;
+}
+
+.main-toolbar .toolbar-input {
+    padding: 2px 6px;
+    min-width: 90px;
+    font-size: 0.8rem;
+}
+
+.main-toolbar .misc-button,
+.main-toolbar .add-button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+}
 body {
     font-family: Arial, sans-serif;
     margin: 40px;
@@ -200,15 +228,16 @@ img.puffle-gif {
 .main-toolbar {
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
+    left: 40px;
+    right: 40px;
+    width: auto;
     z-index: 10;
     background: #0280cd;
     border-top: 3px solid #00ccff;
     box-shadow: 0 -4px 0 #003366;
     padding: 6px 12px;
     overflow-x: auto;
+    border-radius: 12px 12px 0 0;
 }
 
 .toolbar-form {
@@ -254,4 +283,42 @@ img.puffle-gif {
     border-bottom: 3px solid #01c0f6;
     border-right: 3px solid #01c0f6;
     box-shadow: 0 2px 0 #003366;
+}
+
+.main-toolbar .add-button {
+    margin-bottom: 0;
+    align-self: center;
+}
+
+.main-toolbar {
+    padding: 4px 8px;
+    font-size: 0.85rem;
+}
+
+.main-toolbar .toolbar-form {
+    gap: 8px;
+}
+
+.main-toolbar .toolbar-group {
+    gap: 4px;
+}
+
+.main-toolbar .toolbar-group label {
+    font-size: 0.8rem;
+}
+
+.main-toolbar .toolbar-input {
+    padding: 2px 6px;
+    min-width: 90px;
+    font-size: 0.8rem;
+}
+
+.main-toolbar .misc-button,
+.main-toolbar .add-button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+}
+
+.main-toolbar .toolbar-form {
+    transform: translateX(26px);
 }
