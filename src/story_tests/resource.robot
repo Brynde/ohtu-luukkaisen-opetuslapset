@@ -6,6 +6,7 @@ ${SERVER}         localhost:5001
 ${HOME_URL}       http://${SERVER}/
 ${NEW_URL}        http://${SERVER}/sources/new
 ${RESET_URL}      http://${SERVER}/reset_db
+${SEARCH_URL}   http://${SERVER}/sources/find_source
 ${BROWSER}        chrome
 ${HEADLESS}       false
 ${WINDOW_SIZE}    1280,2000
@@ -76,9 +77,16 @@ Reset Sources
 New Source Form Should Be Open
     Title Should Be    Lisää uusi viite
 
+Submit Sort Form Via JS
+    Execute Javascript    const f=document.getElementById('sort'); if (f) f.submit();
+
 Home Page Should Be Open
     Wait Until Location Is    ${HOME_URL}    3 s
     Title Should Be      Source Penguin
+
+Search Page Should Be Open
+    Title Should Be    Haku
+
 
 Go To Starting Page
     Go To    ${HOME_URL}
