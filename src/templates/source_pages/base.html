@@ -16,9 +16,13 @@
             {% else %}{{ source.ref_type }}{% endif %}
           </p>
           <p><strong>Vuosi:</strong> {{ source.year }}</p>
+
           {% if source.journal or source.publisher %}
-            <p><strong>Julkaisu / Kustantaja:</strong> {{ source.journal if source.journal else source.publisher }}</p>
+            <p><strong>Julkaisu / Kustantaja:</strong>
+              {{ source.journal if source.journal else source.publisher }}
+            </p>
           {% endif %}
+
           {% if source.doi %}
             <p><strong>DOI:</strong></p>
             <button type="button" class="doi-button" data-target="doi-{{ source.key }}">Näytä DOI</button>
@@ -26,14 +30,26 @@
               <p>{{ source.doi }}</p>
             </pre>
           {% endif %}
+
           <h3>BibTeX koodi:</h3>
           <div class="bib-controls">
-            <button type="button" class="misc-button" data-target="bib-{{ source.key }}">Näytä BibTeX</button>
-            <button type="button" class="copy-button" data-target="bib-{{ source.key }}">Kopioi</button>
+            <button type="button" class="misc-button" data-target="bib-{{ source.key }}">
+              Näytä BibTeX
+            </button>
+            <button type="button" class="copy-button" data-target="bib-{{ source.key }}">
+              Kopioi
+            </button>
           </div>
+
           <pre id="bib-{{ source.key }}" class="code" style="display:none; white-space: pre-wrap;">
             <p>{{ source.bibtex }}</p>
           </pre>
+
+          <p class="timestamps">
+            <strong>Luotu:</strong> {{ source.created_at }}<br>
+            <strong>Muokattu:</strong> {{ source.updated_at }}
+          </p>
+
           <div class="buttons">
             <a href="{{ url_for('edit_source', source_key=source.key) }}" class="edit-btn">Muokkaa</a>
             <form action="{{ url_for('delete_source', source_key=source.key) }}" method="post" style="display:inline;">
@@ -57,6 +73,7 @@ document.addEventListener('click', (e) => {
     el.style.display = shown ? 'none' : 'block';
     e.target.textContent = shown ? 'Näytä BibTeX' : 'Piilota BibTeX';
   }
+
   if (e.target.matches('.copy-button')) {
     const id = e.target.dataset.target;
     const el = document.getElementById(id);
@@ -70,6 +87,7 @@ document.addEventListener('click', (e) => {
       });
     }
   }
+
   if (e.target.matches('.doi-button')) {
     const id = e.target.dataset.target;
     const el = document.getElementById(id);
