@@ -2,10 +2,10 @@
 # ohtu-luukkaisen-opetuslapset
 
 
-(https://docs.google.com/spreadsheets/d/1-FlkctWyJTgW-eF1vH_Z0ssMxPyceTmeGw08CQMjLpU/edit?usp=sharing)[Product & sprint backlog]
+[https://docs.google.com/spreadsheets/d/1-FlkctWyJTgW-eF1vH_Z0ssMxPyceTmeGw08CQMjLpU/edit?usp=sharing](Product & sprint backlog)
 
 
-(https://docs.google.com/document/d/1r5tFbGW73tVM3U2KB1zq1CpFmlb4V8JGO6uMJZGWSYI/edit?usp=sharing)[Raportti]
+[https://docs.google.com/document/d/1r5tFbGW73tVM3U2KB1zq1CpFmlb4V8JGO6uMJZGWSYI/edit?usp=sharing](Raportti)
 
 ## Asennusohjeet:
 
