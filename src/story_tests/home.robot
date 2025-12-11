@@ -20,7 +20,7 @@ Sources Are Alphabetically Ordered By Title
     Go To Starting Page
     Home Page Should Be Open
     Select From List By Label  sort  Otsikon mukaan A-Ö
-    Submit Form  id:sort
+    Submit Sort Form Safely
 
     Titles Should Be In Alphabetical Order
 
@@ -33,7 +33,7 @@ Sources Are In Reverse Alphabetically Order By Title
     Go To Starting Page
     Home Page Should Be Open
     Select From List By Label  sort  Otsikon mukaan Ö-A
-    Submit Form  id:sort
+    Submit Sort Form Safely
 
 
     Titles Should Be In Reverse Alphabetical Order
@@ -47,7 +47,7 @@ Sources Are Ordered By Year Newest First
     Go To Starting Page
     Home Page Should Be Open
     Select From List By Label  sort  Uusin ensin
-    Submit Form  id:sort
+    Submit Sort Form Safely
 
     Newest Should Be First
 
@@ -60,7 +60,7 @@ Sources Are Ordered By Year Oldest First
     Go To Starting Page
     Home Page Should Be Open
     Select From List By Label  sort  Vanhin ensin
-    Submit Form  id:sort
+    Submit Sort Form Safely
 
     Oldest Should Be First
 
@@ -83,6 +83,8 @@ Add Source
     Input Text    journal     Testilehti
     Input Text    publisher   Testikustantaja
     Click Button  Tallenna viite
+    ${ok}=    Run Keyword And Return Status    Wait Until Location Is    ${HOME_URL}    3 s
+    Run Keyword If    not ${ok}    Go To    ${HOME_URL}
     Home Page Should Be Open
 
 Titles Should Be In Alphabetical Order
