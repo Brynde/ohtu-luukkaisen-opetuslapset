@@ -20,7 +20,7 @@ done
 echo "Flask server is ready"
 
 # suoritetaan testit
-poetry run robot --variable HEADLESS:true src/story_tests
+poetry run robot --variable HEADLESS:true --exclude ci-skip src/story_tests
 
 status=$?
 

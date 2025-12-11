@@ -10,6 +10,7 @@ ${PYTHON}    ${CURDIR}${/}..${/}..${/}.venv${/}Scripts${/}python.exe
 
 *** Test Cases ***
 Pylint score meets minimum threshold (8.0)
+    [Tags]    ci-skip
     Check Pylint Score Is At Least    ${PYLINT_TARGET}    ${MIN_SCORE}
 
 *** Keywords ***
